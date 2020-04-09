@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = null;
+}
+@*<head>
+        <script src="~/js/jquery-3.3.1.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script>
+            $(function () {
+                $(".img").click(function () {
+                    var data1 = $(".img").attr("value");
+                    var data2 = $(".img").attr("value2");
+                    var data3 = $(".img").attr("color");
+                    $.ajax({
+                        url: "/Home/Index",
+                        data: { x: data1, y: data2, color: data3 },
+                        method: "POST",
+                        //contentType: "application/json;charset=utf-8",
+                        success: function () {
+                            console.log(61);
+                        }, error: function () {
+                            alert("hata olustu");
+                        }, complete: function () {
+                        }
+                    });
+                });
+            });
+        </script>
+    </head>*@
+
+@for (int y = 1; y < 9; y++)
+{
+    for (int x = 1; x < 9; x++)
+    {
+        foreach (var square in ViewBag.WhiteSquares)
+        {
+            if (square.Coordinate.X == x && square.Coordinate.Y == y)
+            {
+
+                if (square.Piece == null)
+                {
+                    <img onclick="window.location.href='@Url.Action("Click","Home",new { X1=x,Y1=y,Color=square.Color})'" height="75" width="75" style="position:relative; background-color:white" />
+                }
+                else
+                {
+                    <img onclick="window.location.href='@Url.Action("Click","Home",new { X1=x,Y1=y,Color=square.Color})'" src="@square.Piece.ImageURL" height="75" width="75" style="position:relative; background-color:white" />
+
+                }
+            }
+        }
+        foreach (var square in ViewBag.BlackSquares)
+        {
+            if (square.Coordinate.X == x && square.Coordinate.Y == y)
+            {
+                if (square.Piece == null)
+                {
+                    <img onclick="window.location.href='@Url.Action("Click","Home",new { X1=x,Y1=y,Color=square.Color})'" height="75" width="75" style="position:relative; background-color:black" />
+                }
+                else
+                {
+                    <img onclick="window.location.href='@Url.Action("Click","Home",new { X1=x,Y1=y,Color=square.Color})'" src="@square.Piece.ImageURL" height="75" width="75" style="position:relative; background-color:black" />
+
+                }
+            }
+        }
+    }
+    <br />
+}
+
+
