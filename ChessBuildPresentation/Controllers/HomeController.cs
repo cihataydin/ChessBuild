@@ -16,7 +16,7 @@ namespace ChessBuildPresentation.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private IPiece piece;
-        
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -24,133 +24,49 @@ namespace ChessBuildPresentation.Controllers
 
         public IActionResult Click(int x1, int y1, Color color)
         {
-            if (color == Color.black)
+            int? Xcoord = HttpContext.Session.GetInt32("Xcoord");
+            int? Ycoord = HttpContext.Session.GetInt32("Ycoord");
+            foreach (var square in Board.AllSquares)
             {
-                foreach (var square in Board.BlackSquares)
+                if (square.Coordinate.X == x1 && square.Coordinate.Y == y1)
                 {
-                    if (square.Coordinate.X == x1 && square.Coordinate.Y == y1)
+                    if (Xcoord == null && Ycoord == null && square.Piece!=null)
                     {
-                        if (square.Piece != null)
+                        HttpContext.Session.SetInt32("Xcoord", x1);
+                        HttpContext.Session.SetInt32("Ycoord", y1);
+                        return View(Board.AllSquares);
+                    }
+                    else
+                    {
+                        if(Xcoord!=null && Ycoord != null)
                         {
-                            HttpContext.Session.SetInt32("Xcoord", x1);                      
-                            HttpContext.Session.SetInt32("Ycoord", y1);
-                            HttpContext.Session.SetInt32("color", (int)color);
-                            return View(Board.AllSquares);
-                        }
-                        else
-                        {
-                            int? x = HttpContext.Session.GetInt32("Xcoord");
-                            int? y = HttpContext.Session.GetInt32("Ycoord");
-                            int? clr = HttpContext.Session.GetInt32("color");
-                            if (x != null && y != null)
+                            foreach (var item in Board.AllSquares)
                             {
-                                if(clr == (int)Color.black)
+                                if (item.Coordinate.X == Xcoord && item.Coordinate.Y == Ycoord && item.Piece != null)
                                 {
-                                    foreach (var item in Board.BlackSquares)
-                                    {
-                                        if(item.Coordinate.X==x && item.Coordinate.Y == y)
-                                        {
-                                            item.Piece.CheckSquares();
-                                            item.Piece.MoveTo(square);
-                                            HttpContext.Session.Clear();
-                                            return View(Board.AllSquares);
-                                        }
-
-                                    }
-                                }
-                                else if (clr == (int)Color.white)
-                                {
-                                    foreach (var item in Board.WhiteSquares)
-                                    {
-                                        if (item.Coordinate.X == x && item.Coordinate.Y == y)
-                                        {
-                                            item.Piece.CheckSquares();
-                                            item.Piece.MoveTo(square);
-                                            HttpContext.Session.Clear();
-                                            return View(Board.AllSquares);
-                                        }
-
-                                    }
+                                    item.Piece.CheckSquares();
+                                    item.Piece.MoveTo(square);
+                                    HttpContext.Session.Clear();
+                                    return View(Board.AllSquares);
                                 }
 
                             }
                         }
                     }
- 
                 }
-                return View(Board.AllSquares);
             }
-            else
-            {
-                foreach (var square in Board.WhiteSquares)
-                {
-                    if (square.Coordinate.X == x1 && square.Coordinate.Y == y1)
-                    {
-                        if (square.Piece != null)
-                        {
-                            HttpContext.Session.SetInt32("Xcoord", x1);
-                            HttpContext.Session.SetInt32("Ycoord", y1);
-                            HttpContext.Session.SetInt32("color", (int)color);
-                            return View(Board.AllSquares);
-                        }
-                        else
-                        {
-                            int? x = HttpContext.Session.GetInt32("Xcoord");
-                            int? y = HttpContext.Session.GetInt32("Ycoord");
-                            int? clr = HttpContext.Session.GetInt32("color");
-                            if (x != null && y != null)
-                            {
-                                if (clr == (int)Color.black)
-                                {
-                                    foreach (var item in Board.BlackSquares)
-                                    {
-                                        if (item.Coordinate.X == x && item.Coordinate.Y == y)
-                                        {
-                                            item.Piece.CheckSquares();
-                                            item.Piece.MoveTo(square);
-                                            HttpContext.Session.Clear();
-                                            return View(Board.AllSquares);
-                                        }
-
-                                    }
-                                }
-                                else if (clr == (int)Color.white)
-                                {
-                                    foreach (var item in Board.WhiteSquares)
-                                    {
-                                        if (item.Coordinate.X == x && item.Coordinate.Y == y)
-                                        {
-                                            item.Piece.CheckSquares();
-                                            item.Piece.MoveTo(square);
-                                            HttpContext.Session.Clear();
-                                            return View(Board.AllSquares);
-                                        }
-
-                                    }
-                                }
-
-                            }
-                        }
-                    }
-
-                }
-                return View(Board.AllSquares);
-            }
+            return View(Board.AllSquares);
         }
-        
+
         public IActionResult Index()
         {
 
-                Board.CreateBoard();
-                piece = new Rook();
-                piece.SetPiece();
-                ViewBag.WhiteSquares = Board.WhiteSquares;
-                ViewBag.BlackSquares = Board.BlackSquares;
-                return View();
-
-            //    int coolor = Convert.ToInt32(color);
-            //    int x1 = Convert.ToInt32(x);
-            //    int y1 = Convert.ToInt32(y);
+            Board.CreateBoard();
+            piece = new Rook();
+            piece.SetPiece();
+            ViewBag.WhiteSquares = Board.WhiteSquares;
+            ViewBag.BlackSquares = Board.BlackSquares;
+            return View();
         }
 
         public IActionResult Privacy()

@@ -19,25 +19,29 @@ namespace ChessBuildStones
         {
             int CoordinateX = Square.Coordinate.X;
             int CoordinateY = Square.Coordinate.Y;
-            for (int i = CoordinateX+1; i < (int)Boards.upperLimit; i++)
+            AvailableSquares.Clear();
+            for (int i = CoordinateX + 1; i < (int)Boards.upperLimit; i++)
             {
-                PickCoordinate(i,CoordinateY);
+                if(!PickCoordinate(i, CoordinateY))
+                    break;
             }
 
-            for (int i = CoordinateX-1; i > (int)Boards.lowerLimit; i--)
+            for (int i = CoordinateX - 1; i > (int)Boards.lowerLimit; i--)
             {
-                PickCoordinate(i, CoordinateY);
+                if (!PickCoordinate(i, CoordinateY))
+                    break;
             }
 
-            for (int i = CoordinateY+1; i < (int)Boards.upperLimit; i++)
+            for (int i = CoordinateY + 1; i < (int)Boards.upperLimit; i++)
             {
-
-                PickCoordinate(CoordinateX,i);
+                if (!PickCoordinate(CoordinateX, i))
+                    break;
             }
 
-            for (int i = CoordinateY-1; i > (int)Boards.lowerLimit; i--)
+            for (int i = CoordinateY - 1; i > (int)Boards.lowerLimit; i--)
             {
-                PickCoordinate(CoordinateX,i);
+                if (!PickCoordinate(CoordinateX, i))
+                    break;
             }
         }
 
@@ -113,39 +117,25 @@ namespace ChessBuildStones
             }
         }
 
-        void PickCoordinate(int x, int y)
+        bool PickCoordinate(int x, int y)
         {
-            if (Square.Color==Color.black)
+            foreach (var square in Board.AllSquares)
             {
-                foreach (var square in Board.BlackSquares)
+                if (y == square.Coordinate.Y && x == square.Coordinate.X)
                 {
-                    if (y == square.Coordinate.Y && x == square.Coordinate.X)
+                    if (square.Piece == null)
                     {
-                        if (square.Piece == null)
-                            AvailableSquares.Add(square);
-                        else
-                        {
-                            break;
-                        }
+                        AvailableSquares.Add(square);
+                        return true;
+                    }
+                    else
+                    {
+                        AvailableSquares.Add(square);
+                        return false;
                     }
                 }
             }
-            else
-            {
-                foreach (var square in Board.WhiteSquares)
-                {
-                    if (y == square.Coordinate.Y && x == square.Coordinate.X)
-                    {
-                        if (square.Piece == null)
-                            AvailableSquares.Add(square);
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
-            }
-
+            return true;
         }
     }
 }
