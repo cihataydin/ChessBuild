@@ -17,35 +17,28 @@ namespace ChessBuildStones
 
         public void CheckSquares()
         {
-            int firstCoordinateX = Square.Coordinate.X;
-            int firstCoordinateY = Square.Coordinate.Y;
-            for (int i = ++Square.Coordinate.X; i < (int)Boards.upperLimit; i++)
+            int CoordinateX = Square.Coordinate.X;
+            int CoordinateY = Square.Coordinate.Y;
+            for (int i = CoordinateX+1; i < (int)Boards.upperLimit; i++)
             {
-                Square.Coordinate.X = i;
-                PickCoordinate();
+                PickCoordinate(i,CoordinateY);
             }
-            Square.Coordinate.X = firstCoordinateX;
 
-            for (int i = --Square.Coordinate.X; i > (int)Boards.lowerLimit; i--)
+            for (int i = CoordinateX-1; i > (int)Boards.lowerLimit; i--)
             {
-                Square.Coordinate.X = i;
-                PickCoordinate();
+                PickCoordinate(i, CoordinateY);
             }
-            Square.Coordinate.X = firstCoordinateX;
 
-            for (int i = ++Square.Coordinate.Y; i < (int)Boards.upperLimit; i++)
+            for (int i = CoordinateY+1; i < (int)Boards.upperLimit; i++)
             {
-                Square.Coordinate.Y = i;
-                PickCoordinate();
-            }
-            Square.Coordinate.Y = firstCoordinateY;
 
-            for (int i = --Square.Coordinate.Y; i > (int)Boards.lowerLimit; i--)
-            {
-                Square.Coordinate.Y = i;
-                PickCoordinate();
+                PickCoordinate(CoordinateX,i);
             }
-            Square.Coordinate.Y = firstCoordinateY;
+
+            for (int i = CoordinateY-1; i > (int)Boards.lowerLimit; i--)
+            {
+                PickCoordinate(CoordinateX,i);
+            }
         }
 
         public bool MoveTo(Square square)
@@ -120,14 +113,13 @@ namespace ChessBuildStones
             }
         }
 
-        void PickCoordinate()
+        void PickCoordinate(int x, int y)
         {
-
             if (Square.Color==Color.black)
             {
                 foreach (var square in Board.BlackSquares)
                 {
-                    if (Square.Coordinate.Y == square.Coordinate.Y && Square.Coordinate.X == square.Coordinate.X)
+                    if (y == square.Coordinate.Y && x == square.Coordinate.X)
                     {
                         if (square.Piece == null)
                             AvailableSquares.Add(square);
@@ -142,7 +134,7 @@ namespace ChessBuildStones
             {
                 foreach (var square in Board.WhiteSquares)
                 {
-                    if (Square.Coordinate.Y == square.Coordinate.Y && Square.Coordinate.X == square.Coordinate.X)
+                    if (y == square.Coordinate.Y && x == square.Coordinate.X)
                     {
                         if (square.Piece == null)
                             AvailableSquares.Add(square);
