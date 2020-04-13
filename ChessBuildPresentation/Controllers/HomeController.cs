@@ -15,13 +15,15 @@ namespace ChessBuildPresentation.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private IPiece piece;
+        private IPiece pieceRook;
+        private IPiece pieceBishop;
+        private IPiece pieceKnight;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
-
+        
         public IActionResult Click(int x1, int y1, Color color)
         {
             int? Xcoord = HttpContext.Session.GetInt32("Xcoord");
@@ -44,7 +46,7 @@ namespace ChessBuildPresentation.Controllers
                             {
                                 if (item.Coordinate.X == Xcoord && item.Coordinate.Y == Ycoord && item.Piece != null)
                                 {
-                                    item.Piece.CheckSquares();
+                                    item.Piece.CheckSquare();
                                     item.Piece.MoveTo(square);
                                     HttpContext.Session.Clear();
                                     return View(Board.AllSquares);
@@ -60,10 +62,13 @@ namespace ChessBuildPresentation.Controllers
 
         public IActionResult Index()
         {
-
             Board.CreateBoard();
-            piece = new Rook();
-            piece.SetPiece();
+            pieceRook = new Rook();
+            pieceRook.SetPiece();
+            pieceBishop = new Bishop();
+            pieceBishop.SetPiece();
+            pieceKnight = new Knight();
+            pieceKnight.SetPiece();
             ViewBag.WhiteSquares = Board.WhiteSquares;
             ViewBag.BlackSquares = Board.BlackSquares;
             return View();

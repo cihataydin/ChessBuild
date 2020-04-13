@@ -18,5 +18,6 @@ namespace ChessBuildPieces
     {
         public static string rookImageURL = "../../img/BlackRook.png";
         public static string bishopImageURL = "../../img/BlackBishop.png";
+        public static string knightImageURL = "../../img/BlackKnight.png";
     }
 }

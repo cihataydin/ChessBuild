@@ -11,7 +11,8 @@ namespace ChessBuildPieces
         string ImageURL { get; set; }
         List<Square> AvailableSquares { get; set; }
         bool MoveTo(Square square);
-        void CheckSquares();
+        void CheckSquare();
+        bool PickSquare(int x,int y);
         void SetPiece();
         
     }
