@@ -28,7 +28,11 @@ namespace ChessBuildPieces
                     }
                     else
                     {
-                        AvailableSquares.Add(square);
+                        if (square.Piece.Color != Color)
+                        {
+                            AvailableSquares.Add(square);
+                        }
+                        
                         return false;
                     }
                 }

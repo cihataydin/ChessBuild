@@ -32,12 +32,12 @@ namespace ChessBuildStones
             {
                 if ((square.Coordinate.X == 2 && square.Coordinate.Y == 1) || (square.Coordinate.X == 7 && square.Coordinate.Y == 1))
                 {
-                    square.Piece = new Knight() { Color = Color.white, ImageURL = Constant.knightImageURL, Square = square };
+                    square.Piece = new Knight() { Color = Color.white, ImageURL = Constant.whiteKnightImageURL, Square = square };
                     Board.WhitePieces.Add(square.Piece);
                 }
                 if ((square.Coordinate.X == 2 && square.Coordinate.Y == 8) || (square.Coordinate.X == 7 && square.Coordinate.Y == 8))
                 {
-                    square.Piece = new Knight() { Color = Color.black, ImageURL = Constant.knightImageURL, Square = square };
+                    square.Piece = new Knight() { Color = Color.black, ImageURL = Constant.blackKnightImageURL, Square = square };
                     Board.BlackPieces.Add(square.Piece);
                 }
             }

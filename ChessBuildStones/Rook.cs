@@ -12,31 +12,31 @@ namespace ChessBuildStones
         }
         public void CheckSquare()
         {
-            int CoordinateX = Square.Coordinate.X;
-            int CoordinateY = Square.Coordinate.Y;
+            int coordinateX = Square.Coordinate.X;
+            int coordinateY = Square.Coordinate.Y;
             AvailableSquares.Clear();
 
-            for (int i = CoordinateX + 1; i < (int)Boards.upperLimit; i++)
+            for (int i = coordinateX + 1; i < (int)Boards.upperLimit; i++)
             {
-                if(!PickSquare(i, CoordinateY))
+                if(!PickSquare(i, coordinateY))
                     break;
             }
 
-            for (int i = CoordinateX - 1; i > (int)Boards.lowerLimit; i--)
+            for (int i = coordinateX - 1; i > (int)Boards.lowerLimit; i--)
             {
-                if (!PickSquare(i, CoordinateY))
+                if (!PickSquare(i, coordinateY))
                     break;
             }
 
-            for (int i = CoordinateY + 1; i < (int)Boards.upperLimit; i++)
+            for (int i = coordinateY + 1; i < (int)Boards.upperLimit; i++)
             {
-                if (!PickSquare(CoordinateX, i))
+                if (!PickSquare(coordinateX, i))
                     break;
             }
 
-            for (int i = CoordinateY - 1; i > (int)Boards.lowerLimit; i--)
+            for (int i = coordinateY - 1; i > (int)Boards.lowerLimit; i--)
             {
-                if (!PickSquare(CoordinateX, i))
+                if (!PickSquare(coordinateX, i))
                     break;
             }
         }
@@ -47,12 +47,12 @@ namespace ChessBuildStones
             {
                 if ((square.Coordinate.X == 1 && square.Coordinate.Y == 1) || (square.Coordinate.X == 8 && square.Coordinate.Y == 1))
                 {
-                    square.Piece = new Rook() { Color = Color.white, ImageURL = Constant.rookImageURL, Square = square };
+                    square.Piece = new Rook() { Color = Color.white, ImageURL = Constant.whiteRookImageURL, Square = square };
                     Board.WhitePieces.Add(square.Piece);
                 }
                 if ((square.Coordinate.X == 1 && square.Coordinate.Y == 8) || (square.Coordinate.X == 8 && square.Coordinate.Y == 8))
                 {
-                    square.Piece = new Rook() { Color = Color.black, ImageURL = Constant.rookImageURL, Square = square };
+                    square.Piece = new Rook() { Color = Color.black, ImageURL = Constant.blackRookImageURL, Square = square };
                     Board.BlackPieces.Add(square.Piece);
                 }
             }

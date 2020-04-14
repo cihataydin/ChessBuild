@@ -18,6 +18,9 @@ namespace ChessBuildPresentation.Controllers
         private IPiece pieceRook;
         private IPiece pieceBishop;
         private IPiece pieceKnight;
+        private IPiece pieceQueen;
+        private IPiece piecePawn;
+        private IPiece pieceKing;
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -63,12 +66,24 @@ namespace ChessBuildPresentation.Controllers
         public IActionResult Index()
         {
             Board.CreateBoard();
+            piecePawn = new Pawn();
+            piecePawn.SetPiece();
+
             pieceRook = new Rook();
             pieceRook.SetPiece();
+
             pieceBishop = new Bishop();
             pieceBishop.SetPiece();
+
             pieceKnight = new Knight();
             pieceKnight.SetPiece();
+
+            pieceQueen = new Queen();
+            pieceQueen.SetPiece();
+
+            pieceKing = new King();
+            pieceKing.SetPiece();
+
             ViewBag.WhiteSquares = Board.WhiteSquares;
             ViewBag.BlackSquares = Board.BlackSquares;
             return View();

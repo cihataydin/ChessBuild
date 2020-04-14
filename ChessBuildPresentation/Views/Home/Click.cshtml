@@ -16,11 +16,11 @@
                 {
                     if (square.Piece == null)
                     {
-                        <img onclick="window.location.href='@Url.Action("Click","Home",new { X1=x,Y1=y,Color=square.Color})'" height="75" width="75" style="position:relative; background-color:black" />
+                        <img onclick="window.location.href='@Url.Action("Click","Home",new { X1=x,Y1=y,Color=square.Color})'" height="75" width="75" style="position:relative; background-color:saddlebrown" />
                     }
                     else
                     {
-                        <img onclick="window.location.href='@Url.Action("Click","Home",new { X1=x,Y1=y,Color=square.Color})'" src="@square.Piece.ImageURL" height="75" width="75" style="position:relative; background-color:black" />
+                        <img onclick="window.location.href='@Url.Action("Click","Home",new { X1=x,Y1=y,Color=square.Color})'" src="@square.Piece.ImageURL" height="75" width="75" style="position:relative; background-color:saddlebrown" />
 
                     }
                 }
