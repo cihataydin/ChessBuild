@@ -9,7 +9,30 @@ namespace ChessBuildStones
     {
         public void CheckSquare()
         {
-            throw new NotImplementedException();
+            int coordinateX = Square.Coordinate.X;
+            int coordinateY = Square.Coordinate.Y;
+            AvailableSquares.Clear();
+
+            int one = 1;
+            int two = 2;
+            
+            if (Color == Color.white)
+            {
+                PickSquare(coordinateX, coordinateY + one);
+                PickSquare(coordinateX + one, coordinateY + one);
+                PickSquare(coordinateX - one, coordinateY + one);
+                if(Square.Coordinate.Y==2)
+                    PickSquare(coordinateX, coordinateY + two);
+            }
+            if(Color == Color.black)
+            {
+                PickSquare(coordinateX, coordinateY - one);
+                PickSquare(coordinateX + one, coordinateY - one);
+                PickSquare(coordinateX - one, coordinateY - one);
+                if (Square.Coordinate.Y == 7)
+                    PickSquare(coordinateX, coordinateY - two);
+            }
+
         }
 
         public void SetPiece()
@@ -28,5 +51,29 @@ namespace ChessBuildStones
                 }
             }
         }
+
+        public override bool PickSquare(int x, int y)
+        {
+            foreach (var square in Board.AllSquares)
+            {
+                if (y == square.Coordinate.Y && x == square.Coordinate.X)
+                {
+                    if (Square.Coordinate.X != x)
+                    {
+                        if(square.Piece != null && square.Piece.Color!=Color)
+                            AvailableSquares.Add(square);
+                        return true;
+                    }
+                    else 
+                    {
+                        if (square.Piece ==null)
+                            AvailableSquares.Add(square);
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
     }
 }
+

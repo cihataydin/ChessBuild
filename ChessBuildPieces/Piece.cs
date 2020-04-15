@@ -15,7 +15,7 @@ namespace ChessBuildPieces
         public Color Color { get; set; }
         public string ImageURL { get; set; }
 
-        public bool PickSquare(int x, int y)
+        public virtual bool PickSquare(int x, int y)
         {
             foreach (var square in Board.AllSquares)
             {

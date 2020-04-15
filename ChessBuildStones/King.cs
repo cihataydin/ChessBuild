@@ -9,7 +9,19 @@ namespace ChessBuildStones
     {
         public void CheckSquare()
         {
-            throw new NotImplementedException();
+            int coordinateX = Square.Coordinate.X;
+            int coordinateY = Square.Coordinate.Y;
+            AvailableSquares.Clear();
+
+            int one = 1;
+            PickSquare(coordinateX + one, coordinateY);
+            PickSquare(coordinateX, coordinateY + one);
+            PickSquare(coordinateX - one, coordinateY);
+            PickSquare(coordinateX, coordinateY - one);
+            PickSquare(coordinateX + one, coordinateY + one);
+            PickSquare(coordinateX + one, coordinateY - one);
+            PickSquare(coordinateX - one, coordinateY + one);
+            PickSquare(coordinateX - one, coordinateY - one);
         }
 
         public void SetPiece()
