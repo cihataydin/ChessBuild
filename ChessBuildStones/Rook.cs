@@ -1,6 +1,7 @@
 ﻿using ChessBuildPieces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ChessBuildStones
 {
@@ -54,9 +55,8 @@ namespace ChessBuildStones
                 {
                     square.Piece = new Rook() { Color = Color.black, ImageURL = Constant.blackRookImageURL, Square = square };
                     Board.BlackPieces.Add(square.Piece);
-                }
-            }
+                }              
+            } 
         }
-
     }
 }

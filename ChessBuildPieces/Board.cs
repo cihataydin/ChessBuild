@@ -14,12 +14,14 @@ namespace ChessBuildPieces
             WhiteSquares = new List<Square>();
             BlackPieces = new List<IPiece>();
             WhitePieces = new List<IPiece>();
+            Test = new Dictionary<KeyValuePair<int,int>, Square>();
         }
         public static List<Square> AllSquares { get; set; }
         public static List<Square> BlackSquares { get; set; }
         public static List<Square> WhiteSquares { get; set; }
         public static List<IPiece> BlackPieces { get; set; }
         public static List<IPiece> WhitePieces { get; set; }
+        public static Dictionary<KeyValuePair<int,int>, Square> Test { get; set; }
 
         public static void CreateBoard()
         {
@@ -28,19 +30,21 @@ namespace ChessBuildPieces
                 for (int x = 1; x < (int)Boards.upperLimit; x++)
                 {
                     Square square = new Square(new Coordinate { X = x, Y = y });
-                    if ((x % 2 == 0 && y % 2 == 1) || (x % 2 == 1 && y % 2 == 0))
+                    if ((x + y) % 2 == 0)
                     {
                         square.Color = Color.white;
                         WhiteSquares.Add(square);
                         AllSquares.Add(square);
+                        Test.Add(new KeyValuePair<int, int>(x, y), square);
                     }
                     else
                     {
                         square.Color = Color.black;
                         BlackSquares.Add(square);
                         AllSquares.Add(square);
+                        Test.Add(new KeyValuePair<int, int>(x, y), square);
                     }
-                        
+
                 }
 
             }
