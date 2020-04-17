@@ -1,6 +1,7 @@
 ﻿using ChessBuildPieces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ChessBuildStones
@@ -24,21 +25,20 @@ namespace ChessBuildStones
             PickSquare(coordinateX - one, coordinateY - one);
         }
 
-        public void SetPiece()
+        public void InitialPositionSet()
         {
-            foreach (var square in Board.AllSquares)
-            {
-                if (square.Coordinate.X == 4 && square.Coordinate.Y == 1)
-                {
-                    square.Piece = new King() { Color = Color.white, ImageURL = Constant.whiteKingImageURL, Square = square };
-                    Board.WhitePieces.Add(square.Piece);
-                }
-                if (square.Coordinate.X == 4 && square.Coordinate.Y == 8)
-                {
-                    square.Piece = new King() { Color = Color.black, ImageURL = Constant.blackKingImageURL, Square = square };
-                    Board.BlackPieces.Add(square.Piece);
-                }
-            }
+            Square square;
+
+            var data = Board.Test.Select(t => t.Value).Where(t => t.Coordinate.X == 4 && t.Coordinate.Y == 1).FirstOrDefault();
+            square = (Square)data;
+            square.Piece = new King() { Color = Color.white, ImageURL = Constant.whiteKingImageURL, Square = square };
+            Board.WhitePieces.Add(square.Piece);
+
+            var data2 = Board.Test.Select(t => t.Value).Where(t => t.Coordinate.X == 4 && t.Coordinate.Y == 8).FirstOrDefault();
+            square = (Square)data2;
+            square.Piece = new King() { Color = Color.black, ImageURL = Constant.blackKingImageURL, Square = square };
+            Board.BlackPieces.Add(square.Piece);
+
         }
     }
 }

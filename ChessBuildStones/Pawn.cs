@@ -1,6 +1,7 @@
 ﻿using ChessBuildPieces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ChessBuildStones
@@ -35,20 +36,26 @@ namespace ChessBuildStones
 
         }
 
-        public void SetPiece()
+        public void InitialPositionSet()
         {
-            foreach (var square in Board.AllSquares)
+            List<Square> squares;
+
+            var data = Board.Test.Select(t => t.Value).Where(t => t.Coordinate.Y == 2).ToList();
+            squares = data;
+            foreach (var square in squares)
             {
-                if (square.Coordinate.Y == 2)
-                {
-                    square.Piece = new Pawn() { Color = Color.white, ImageURL = Constant.whitePawnImageURL, Square = square };
-                    Board.WhitePieces.Add(square.Piece);
-                }
-                if (square.Coordinate.Y == 7)
-                {
-                    square.Piece = new Pawn() { Color = Color.black, ImageURL = Constant.blackPawnImageURL, Square = square };
-                    Board.BlackPieces.Add(square.Piece);
-                }
+                square.Piece = new Pawn() { Color = Color.white, ImageURL = Constant.whitePawnImageURL, Square = square };
+                Board.WhitePieces.Add(square.Piece);
+            }
+            squares.Clear();
+
+            var data2 = Board.Test.Select(t => t.Value).Where(t => t.Coordinate.Y == 7).ToList();
+            squares = data2;
+
+            foreach (var square in squares)
+            {
+                square.Piece = new Pawn() { Color = Color.black, ImageURL = Constant.blackPawnImageURL, Square = square };
+                Board.BlackPieces.Add(square.Piece);
             }
         }
 

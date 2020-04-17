@@ -42,21 +42,27 @@ namespace ChessBuildStones
             }
         }
 
-        public void SetPiece()
+        public void InitialPositionSet()
         {
-            foreach (var square in Board.AllSquares)
+            List<Square> squares;
+
+            var data = Board.Test.Select(t => t.Value).Where(t => (t.Coordinate.X == 1 && t.Coordinate.Y == 1) || (t.Coordinate.X == 8 && t.Coordinate.Y == 1)).ToList();
+            squares = data;
+            foreach (var square in squares)
             {
-                if ((square.Coordinate.X == 1 && square.Coordinate.Y == 1) || (square.Coordinate.X == 8 && square.Coordinate.Y == 1))
-                {
-                    square.Piece = new Rook() { Color = Color.white, ImageURL = Constant.whiteRookImageURL, Square = square };
-                    Board.WhitePieces.Add(square.Piece);
-                }
-                if ((square.Coordinate.X == 1 && square.Coordinate.Y == 8) || (square.Coordinate.X == 8 && square.Coordinate.Y == 8))
-                {
-                    square.Piece = new Rook() { Color = Color.black, ImageURL = Constant.blackRookImageURL, Square = square };
-                    Board.BlackPieces.Add(square.Piece);
-                }              
-            } 
+                square.Piece = new Rook() { Color = Color.white, ImageURL = Constant.whiteRookImageURL, Square = square };
+                Board.WhitePieces.Add(square.Piece);
+            }
+            squares.Clear();
+
+            var data2 = Board.Test.Select(t => t.Value).Where(t => (t.Coordinate.X == 1 && t.Coordinate.Y == 8) || (t.Coordinate.X == 8 && t.Coordinate.Y == 8)).ToList();
+            squares = data2;
+
+            foreach (var square in squares)
+            {
+                square.Piece = new Rook() { Color = Color.black, ImageURL = Constant.blackRookImageURL, Square = square };
+                Board.BlackPieces.Add(square.Piece);
+            }
         }
     }
 }

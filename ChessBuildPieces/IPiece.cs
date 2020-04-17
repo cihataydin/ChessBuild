@@ -13,7 +13,7 @@ namespace ChessBuildPieces
         bool MoveTo(Square square);
         void CheckSquare();
         bool PickSquare(int x,int y);
-        void SetPiece();
+        void InitialPositionSet();
         
     }
 }

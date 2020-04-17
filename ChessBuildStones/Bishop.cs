@@ -1,6 +1,7 @@
 ﻿using ChessBuildPieces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ChessBuildStones
@@ -49,21 +50,26 @@ namespace ChessBuildStones
                     break;
             }
         }
-
-        public void SetPiece()
+        public void InitialPositionSet()
         {
-            foreach (var square in Board.AllSquares)
+            List<Square> squares;
+
+            var data = Board.Test.Select(t => t.Value).Where(t => (t.Coordinate.X == 3 && t.Coordinate.Y == 1) || (t.Coordinate.X == 6 && t.Coordinate.Y == 1)).ToList();
+            squares = data;
+            foreach (var square in squares)
             {
-                if ((square.Coordinate.X == 3 && square.Coordinate.Y == 1) || (square.Coordinate.X == 6 && square.Coordinate.Y == 1))
-                {
-                    square.Piece = new Bishop() { Color = Color.white, ImageURL = Constant.whiteBishopImageURL,Square=square };
-                    Board.WhitePieces.Add(square.Piece);
-                }
-                if ((square.Coordinate.X == 3 && square.Coordinate.Y == 8) || (square.Coordinate.X == 6 && square.Coordinate.Y == 8))
-                {
-                    square.Piece = new Bishop() { Color = Color.black, ImageURL = Constant.blackBishopImageURL,Square=square };
-                    Board.BlackPieces.Add(square.Piece);
-                }
+                square.Piece = new Bishop() { Color = Color.white, ImageURL = Constant.whiteBishopImageURL, Square = square };
+                Board.WhitePieces.Add(square.Piece);
+            }
+            squares.Clear();
+
+            var data2 = Board.Test.Select(t => t.Value).Where(t => (t.Coordinate.X == 3 && t.Coordinate.Y == 8) || (t.Coordinate.X == 6 && t.Coordinate.Y == 8)).ToList();
+            squares = data2;
+
+            foreach (var square in squares)
+            {
+                square.Piece = new Bishop() { Color = Color.black, ImageURL = Constant.blackBishopImageURL, Square = square };
+                Board.BlackPieces.Add(square.Piece);
             }
         }
     }

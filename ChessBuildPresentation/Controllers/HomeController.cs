@@ -67,22 +67,22 @@ namespace ChessBuildPresentation.Controllers
         {
             Board.CreateBoard();
             piecePawn = new Pawn();
-            piecePawn.SetPiece();
+            piecePawn.InitialPositionSet();
 
             pieceRook = new Rook();
-            pieceRook.SetPiece();
+            pieceRook.InitialPositionSet();
 
             pieceBishop = new Bishop();
-            pieceBishop.SetPiece();
+            pieceBishop.InitialPositionSet();
 
             pieceKnight = new Knight();
-            pieceKnight.SetPiece();
+            pieceKnight.InitialPositionSet();
 
             pieceQueen = new Queen();
-            pieceQueen.SetPiece();
+            pieceQueen.InitialPositionSet();
 
             pieceKing = new King();
-            pieceKing.SetPiece();
+            pieceKing.InitialPositionSet();
 
             ViewBag.WhiteSquares = Board.WhiteSquares;
             ViewBag.BlackSquares = Board.BlackSquares;

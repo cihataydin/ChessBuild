@@ -1,17 +1,18 @@
 ﻿using ChessBuildPieces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ChessBuildStones
 {
     public class Queen : Piece, IPiece
     {
-        public Queen() :base()
+        public Queen() : base()
         {
 
         }
-        
+
         public void CheckSquare()
         {
             int coordinateX = Square.Coordinate.X;
@@ -76,21 +77,20 @@ namespace ChessBuildStones
 
         }
 
-        public void SetPiece()
+        public void InitialPositionSet()
         {
-            foreach (var square in Board.AllSquares)
-            {
-                if (square.Coordinate.X == 5 && square.Coordinate.Y == 1)
-                {
-                    square.Piece = new Queen() { Color = Color.white, ImageURL = Constant.whiteQueenImageURL, Square = square };
-                    Board.WhitePieces.Add(square.Piece);
-                }
-                if (square.Coordinate.X == 5 && square.Coordinate.Y == 8) 
-                {
-                    square.Piece = new Queen() { Color = Color.black, ImageURL = Constant.blackQueenImageURL, Square = square };
-                    Board.BlackPieces.Add(square.Piece);
-                }
-            }
+            Square square;
+
+            var data = Board.Test.Select(t => t.Value).Where(t => t.Coordinate.X == 5 && t.Coordinate.Y == 1).FirstOrDefault();
+            square = (Square)data;
+            square.Piece = new Queen() { Color = Color.white, ImageURL = Constant.whiteQueenImageURL, Square = square };
+            Board.WhitePieces.Add(square.Piece);
+
+            var data2 = Board.Test.Select(t => t.Value).Where(t => t.Coordinate.X == 5 && t.Coordinate.Y == 8).FirstOrDefault();
+            square = (Square)data2;
+            square.Piece = new Queen() { Color = Color.black, ImageURL = Constant.blackQueenImageURL, Square = square };
+            Board.BlackPieces.Add(square.Piece);
+
         }
     }
 }
