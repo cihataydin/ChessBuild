@@ -84,9 +84,7 @@ namespace ChessBuildPresentation.Controllers
             pieceKing = new King();
             pieceKing.InitialPositionSet();
 
-            ViewBag.WhiteSquares = Board.WhiteSquares;
-            ViewBag.BlackSquares = Board.BlackSquares;
-            return View();
+            return View(Board.AllSquares);
         }
 
         public IActionResult Privacy()

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model List<ChessBuildPieces.Square>
+@{
     ViewData["Title"] = "Home Page";
     Layout = null;
 }
@@ -32,34 +33,33 @@
 {
     for (int x = 1; x < 9; x++)
     {
-        foreach (var square in ViewBag.WhiteSquares)
+        foreach (var square in Model)
         {
             if (square.Coordinate.X == x && square.Coordinate.Y == y)
             {
-
-                if (square.Piece == null)
+                if (square.Color == ChessBuildPieces.Color.white)
                 {
-                    <img onclick="window.location.href='@Url.Action("Click","Home",new { X1=x,Y1=y,Color=square.Color})'" height="75" width="75" style="position:relative; background-color:white" />
+                    if (square.Piece == null)
+                    {
+                        <img onclick="window.location.href='@Url.Action("Click","Home",new { X1=x,Y1=y,Color=square.Color})'" height="75" width="75" style="position:relative; background-color:white" />
+                    }
+                    else
+                    {
+                        <img onclick="window.location.href='@Url.Action("Click","Home",new { X1=x,Y1=y,Color=square.Color})'" src="@square.Piece.ImageURL" height="75" width="75" style="position:relative; background-color:white" />
+
+                    }
                 }
                 else
                 {
-                    <img onclick="window.location.href='@Url.Action("Click","Home",new { X1=x,Y1=y,Color=square.Color})'" src="@square.Piece.ImageURL" height="75" width="75" style="position:relative; background-color:white" />
+                    if (square.Piece == null)
+                    {
+                        <img onclick="window.location.href='@Url.Action("Click","Home",new { X1=x,Y1=y,Color=square.Color})'" height="75" width="75" style="position:relative; background-color:saddlebrown" />
+                    }
+                    else
+                    {
+                        <img onclick="window.location.href='@Url.Action("Click","Home",new { X1=x,Y1=y,Color=square.Color})'" src="@square.Piece.ImageURL" height="75" width="75" style="position:relative; background-color:saddlebrown" />
 
-                }
-            }
-        }
-        foreach (var square in ViewBag.BlackSquares)
-        {
-            if (square.Coordinate.X == x && square.Coordinate.Y == y)
-            {
-                if (square.Piece == null)
-                {
-                    <img onclick="window.location.href='@Url.Action("Click","Home",new { X1=x,Y1=y,Color=square.Color})'" height="75" width="75" style="position:relative; background-color:saddlebrown" />
-                }
-                else
-                {
-                    <img onclick="window.location.href='@Url.Action("Click","Home",new { X1=x,Y1=y,Color=square.Color})'" src="@square.Piece.ImageURL" height="75" width="75" style="position:relative; background-color:saddlebrown" />
-
+                    }
                 }
             }
         }

@@ -46,8 +46,7 @@ namespace ChessBuildStones
         {
             List<Square> squares;
 
-            var data = Board.Test.Select(t => t.Value).Where(t => (t.Coordinate.X == 1 && t.Coordinate.Y == 1) || (t.Coordinate.X == 8 && t.Coordinate.Y == 1)).ToList();
-            squares = data;
+            squares= Board.AllSquares.Select(t => t).Where(t => (t.Coordinate.X == 1 && t.Coordinate.Y == 1) || (t.Coordinate.X == 8 && t.Coordinate.Y == 1)).ToList();
             foreach (var square in squares)
             {
                 square.Piece = new Rook() { Color = Color.white, ImageURL = Constant.whiteRookImageURL, Square = square };
@@ -55,9 +54,7 @@ namespace ChessBuildStones
             }
             squares.Clear();
 
-            var data2 = Board.Test.Select(t => t.Value).Where(t => (t.Coordinate.X == 1 && t.Coordinate.Y == 8) || (t.Coordinate.X == 8 && t.Coordinate.Y == 8)).ToList();
-            squares = data2;
-
+            squares= Board.AllSquares.Select(t => t).Where(t => (t.Coordinate.X == 1 && t.Coordinate.Y == 8) || (t.Coordinate.X == 8 && t.Coordinate.Y == 8)).ToList();
             foreach (var square in squares)
             {
                 square.Piece = new Rook() { Color = Color.black, ImageURL = Constant.blackRookImageURL, Square = square };

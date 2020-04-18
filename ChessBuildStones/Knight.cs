@@ -18,21 +18,19 @@ namespace ChessBuildStones
             int one = 1;
             PickSquare(CoordinateX + two, CoordinateY - one);
             PickSquare(CoordinateX + two, CoordinateY + one);
-            PickSquare(CoordinateX + one, CoordinateY + two);
-            PickSquare(CoordinateX - one, CoordinateY + two);
             PickSquare(CoordinateX - two, CoordinateY + one);
             PickSquare(CoordinateX - two, CoordinateY - one);
+            PickSquare(CoordinateX + one, CoordinateY + two);
+            PickSquare(CoordinateX - one, CoordinateY + two);
             PickSquare(CoordinateX - one, CoordinateY - two);
             PickSquare(CoordinateX + one, CoordinateY - two);
-
         }
 
         public void InitialPositionSet()
         {
             List<Square> squares;
 
-            var data = Board.Test.Select(t => t.Value).Where(t => (t.Coordinate.X == 2 && t.Coordinate.Y == 1) || (t.Coordinate.X == 7 && t.Coordinate.Y == 1)).ToList();
-            squares = data;
+            squares = Board.AllSquares.Select(t => t).Where(t => (t.Coordinate.X == 2 && t.Coordinate.Y == 1) || (t.Coordinate.X == 7 && t.Coordinate.Y == 1)).ToList();
             foreach (var square in squares)
             {
                 square.Piece = new Knight() { Color = Color.white, ImageURL = Constant.whiteKnightImageURL, Square = square };
@@ -40,9 +38,7 @@ namespace ChessBuildStones
             }
             squares.Clear();
 
-            var data2 = Board.Test.Select(t => t.Value).Where(t => (t.Coordinate.X == 2 && t.Coordinate.Y == 8) || (t.Coordinate.X == 7 && t.Coordinate.Y == 8)).ToList();
-            squares = data2;
-
+            squares = Board.AllSquares.Select(t => t).Where(t => (t.Coordinate.X == 2 && t.Coordinate.Y == 8) || (t.Coordinate.X == 7 && t.Coordinate.Y == 8)).ToList();
             foreach (var square in squares)
             {
                 square.Piece = new Knight() { Color = Color.black, ImageURL = Constant.blackKnightImageURL, Square = square };

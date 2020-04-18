@@ -40,8 +40,7 @@ namespace ChessBuildStones
         {
             List<Square> squares;
 
-            var data = Board.Test.Select(t => t.Value).Where(t => t.Coordinate.Y == 2).ToList();
-            squares = data;
+            squares = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.Y == 2).ToList();
             foreach (var square in squares)
             {
                 square.Piece = new Pawn() { Color = Color.white, ImageURL = Constant.whitePawnImageURL, Square = square };
@@ -49,9 +48,7 @@ namespace ChessBuildStones
             }
             squares.Clear();
 
-            var data2 = Board.Test.Select(t => t.Value).Where(t => t.Coordinate.Y == 7).ToList();
-            squares = data2;
-
+            squares = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.Y == 7).ToList();
             foreach (var square in squares)
             {
                 square.Piece = new Pawn() { Color = Color.black, ImageURL = Constant.blackPawnImageURL, Square = square };
@@ -61,22 +58,20 @@ namespace ChessBuildStones
 
         public override bool PickSquare(int x, int y)
         {
-            foreach (var square in Board.AllSquares)
+            Square square = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == x && t.Coordinate.Y == y).FirstOrDefault();
+            if(square != null)
             {
-                if (y == square.Coordinate.Y && x == square.Coordinate.X)
+                if (Square.Coordinate.X != x)
                 {
-                    if (Square.Coordinate.X != x)
-                    {
-                        if(square.Piece != null && square.Piece.Color!=Color)
-                            AvailableSquares.Add(square);
-                        return true;
-                    }
-                    else 
-                    {
-                        if (square.Piece ==null)
-                            AvailableSquares.Add(square);
-                        return false;
-                    }
+                    if (square.Piece != null && square.Piece.Color != Color)
+                        AvailableSquares.Add(square);
+                    return true;
+                }
+                else
+                {
+                    if (square.Piece == null)
+                        AvailableSquares.Add(square);
+                    return false;
                 }
             }
             return true;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ChessBuildPieces
@@ -17,27 +18,25 @@ namespace ChessBuildPieces
 
         public virtual bool PickSquare(int x, int y)
         {
-            foreach (var square in Board.AllSquares)
+            Square square = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == x && t.Coordinate.Y == y).FirstOrDefault();
+            if(square != null)
             {
-                if (y == square.Coordinate.Y && x == square.Coordinate.X)
+                if (square.Piece == null)
                 {
-                    if (square.Piece == null)
+                    AvailableSquares.Add(square);
+                    return true;
+                }
+                else
+                {
+                    if (square.Piece.Color != Color)
                     {
                         AvailableSquares.Add(square);
-                        return true;
                     }
-                    else
-                    {
-                        if (square.Piece.Color != Color)
-                        {
-                            AvailableSquares.Add(square);
-                        }
-                        
-                        return false;
-                    }
+                    return false;
                 }
             }
-            return true; // return 0 for knight piece  
+            return true;
+            
         }
 
         public bool MoveTo(Square square)
@@ -45,54 +44,16 @@ namespace ChessBuildPieces
             IPiece piece = null;
             if (AvailableSquares.Contains(square))
             {
-                if (Square.Color == Color.black)
-                {
-                    foreach (var item in Board.BlackSquares)
-                    {
-                        if (item.Coordinate.X == Square.Coordinate.X && item.Coordinate.Y == Square.Coordinate.Y)
-                        {
-                            piece = item.Piece;
-                            item.Piece = null;
-                        }
-                    }
-                }
-                if (Square.Color == Color.white)
-                {
-                    foreach (var item in Board.WhiteSquares)
-                    {
-                        if (item.Coordinate.X == Square.Coordinate.X && item.Coordinate.Y == Square.Coordinate.Y)
-                        {
-                            piece = item.Piece;
-                            item.Piece = null;
-                        }
+                Square initialSquare = Board.AllSquares.Select(t=>t).Where(t => t.Coordinate.X == Square.Coordinate.X && t.Coordinate.Y == Square.Coordinate.Y).FirstOrDefault();
+                piece = initialSquare.Piece;
+                initialSquare.Piece = null;
 
-                    }
-                }
-
-                if (square.Color == Color.black)
-                {
-                    foreach (var item in Board.BlackSquares)
-                    {
-                        if (item.Coordinate.X == square.Coordinate.X && item.Coordinate.Y == square.Coordinate.Y)
-                        {
-                            item.Piece = piece;
-                        }
-                    }
-                }
-                if (square.Color == Color.white)
-                {
-                    foreach (var item in Board.WhiteSquares)
-                    {
-                        if (item.Coordinate.X == square.Coordinate.X && item.Coordinate.Y == square.Coordinate.Y)
-                        {
-                            item.Piece = piece;
-                        }
-                    }
-                }
+                Square targetSquare = Board.AllSquares.Select(t=>t).Where(t => t.Coordinate.X == square.Coordinate.X && t.Coordinate.Y == square.Coordinate.Y).FirstOrDefault();
+                targetSquare.Piece = piece;
                 Square = square;
                 return true;
             }
-            return false;
+            return false;   
         }
     }
 }

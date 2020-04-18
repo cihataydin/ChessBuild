@@ -43,51 +43,48 @@ namespace ChessBuildStones
                     break;
             }
 
-            int s = 0;
+            int s = 1;
             while (coordinateX + s < (int)Boards.upperLimit && coordinateY + s < (int)Boards.upperLimit)
             {
-                s++;
                 if (!PickSquare(coordinateX + s, coordinateY + s))
                     break;
+                s++;
             }
 
-            int j = 0;
+            int j = 1;
             while (coordinateX - j > (int)Boards.lowerLimit && coordinateY + j < (int)Boards.upperLimit)
             {
-                j++;
                 if (!PickSquare(coordinateX - j, coordinateY + j))
                     break;
+                j++;
             }
 
-            int k = 0;
+            int k = 1;
             while (coordinateX - k > (int)Boards.lowerLimit && coordinateY - k > (int)Boards.lowerLimit)
             {
-                k++;
                 if (!PickSquare(coordinateX - k, coordinateY - k))
                     break;
+                k++;
             }
 
-            int m = 0;
+            int m = 1;
             while (coordinateX + m < (int)Boards.upperLimit && coordinateY - m > (int)Boards.lowerLimit)
             {
-                m++;
                 if (!PickSquare(coordinateX + m, coordinateY - m))
                     break;
+                m++;
             }
-
         }
 
         public void InitialPositionSet()
         {
             Square square;
 
-            var data = Board.Test.Select(t => t.Value).Where(t => t.Coordinate.X == 5 && t.Coordinate.Y == 1).FirstOrDefault();
-            square = (Square)data;
+            square = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 5 && t.Coordinate.Y == 1).FirstOrDefault();
             square.Piece = new Queen() { Color = Color.white, ImageURL = Constant.whiteQueenImageURL, Square = square };
             Board.WhitePieces.Add(square.Piece);
 
-            var data2 = Board.Test.Select(t => t.Value).Where(t => t.Coordinate.X == 5 && t.Coordinate.Y == 8).FirstOrDefault();
-            square = (Square)data2;
+            square = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 5 && t.Coordinate.Y == 8).FirstOrDefault();
             square.Piece = new Queen() { Color = Color.black, ImageURL = Constant.blackQueenImageURL, Square = square };
             Board.BlackPieces.Add(square.Piece);
 
