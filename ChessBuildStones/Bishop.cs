@@ -6,9 +6,9 @@ using System.Text;
 
 namespace ChessBuildStones
 {
-    public class Bishop : Piece,IPiece
+    public class Bishop : Piece, IPiece
     {
-        public Bishop() :base()
+        public Bishop() : base()
         {
 
         }
@@ -20,7 +20,7 @@ namespace ChessBuildStones
 
             int i = 1;
             while (coordinateX + i < (int)Boards.upperLimit && coordinateY + i < (int)Boards.upperLimit)
-            { 
+            {
                 if (!PickSquare(coordinateX + i, coordinateY + i))
                     break;
                 i++;
@@ -28,7 +28,7 @@ namespace ChessBuildStones
 
             int j = 1;
             while (coordinateX - j > (int)Boards.lowerLimit && coordinateY + j < (int)Boards.upperLimit)
-            { 
+            {
                 if (!PickSquare(coordinateX - j, coordinateY + j))
                     break;
                 j++;
@@ -57,14 +57,14 @@ namespace ChessBuildStones
             squares = Board.AllSquares.Select(t => t).Where(t => (t.Coordinate.X == 3 && t.Coordinate.Y == 1) || (t.Coordinate.X == 6 && t.Coordinate.Y == 1)).ToList();
             foreach (var square in squares)
             {
-                square.Piece = new Bishop() { Color = Color.white, ImageURL = Constant.whiteBishopImageURL, Square = square };
+                square.Piece = new Bishop() { Color = Color.white, ImageURL = Constant.whiteBishopImageURL, Square = square, Touchable = true };
             }
             squares.Clear();
 
             squares = Board.AllSquares.Select(t => t).Where(t => (t.Coordinate.X == 3 && t.Coordinate.Y == 8) || (t.Coordinate.X == 6 && t.Coordinate.Y == 8)).ToList();
             foreach (var square in squares)
             {
-                square.Piece = new Bishop() { Color = Color.black, ImageURL = Constant.blackBishopImageURL, Square = square };
+                square.Piece = new Bishop() { Color = Color.black, ImageURL = Constant.blackBishopImageURL, Square = square, Touchable = true };
             }
         }
     }

@@ -29,11 +29,11 @@ namespace ChessBuildStones
         {
             Square square;
 
-            square =Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 4 && t.Coordinate.Y == 1).FirstOrDefault();
-            square.Piece = new King() { Color = Color.white, ImageURL = Constant.whiteKingImageURL, Square = square };
+            square = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 4 && t.Coordinate.Y == 1).FirstOrDefault();
+            square.Piece = new King() { Color = Color.white, ImageURL = Constant.whiteKingImageURL, Square = square, Touchable = false };
 
             square = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 4 && t.Coordinate.Y == 8).FirstOrDefault();
-            square.Piece = new King() { Color = Color.black, ImageURL = Constant.blackKingImageURL, Square = square };
+            square.Piece = new King() { Color = Color.black, ImageURL = Constant.blackKingImageURL, Square = square, Touchable = false };
 
         }
     }

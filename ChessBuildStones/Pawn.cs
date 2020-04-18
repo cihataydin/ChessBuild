@@ -16,16 +16,16 @@ namespace ChessBuildStones
 
             int one = 1;
             int two = 2;
-            
+
             if (Color == Color.white)
             {
                 PickSquare(coordinateX, coordinateY + one);
                 PickSquare(coordinateX + one, coordinateY + one);
                 PickSquare(coordinateX - one, coordinateY + one);
-                if(Square.Coordinate.Y==2)
+                if (Square.Coordinate.Y == 2)
                     PickSquare(coordinateX, coordinateY + two);
             }
-            if(Color == Color.black)
+            if (Color == Color.black)
             {
                 PickSquare(coordinateX, coordinateY - one);
                 PickSquare(coordinateX + one, coordinateY - one);
@@ -43,21 +43,21 @@ namespace ChessBuildStones
             squares = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.Y == 2).ToList();
             foreach (var square in squares)
             {
-                square.Piece = new Pawn() { Color = Color.white, ImageURL = Constant.whitePawnImageURL, Square = square };
+                square.Piece = new Pawn() { Color = Color.white, ImageURL = Constant.whitePawnImageURL, Square = square, Touchable = true };
             }
             squares.Clear();
 
             squares = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.Y == 7).ToList();
             foreach (var square in squares)
             {
-                square.Piece = new Pawn() { Color = Color.black, ImageURL = Constant.blackPawnImageURL, Square = square };
+                square.Piece = new Pawn() { Color = Color.black, ImageURL = Constant.blackPawnImageURL, Square = square, Touchable = true };
             }
         }
 
         public override bool PickSquare(int x, int y)
         {
             Square square = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == x && t.Coordinate.Y == y).FirstOrDefault();
-            if(square != null)
+            if (square != null)
             {
                 if (Square.Coordinate.X != x)
                 {

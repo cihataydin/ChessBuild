@@ -8,6 +8,7 @@ namespace ChessBuildPieces
     {
         Color Color { get; set; }
         Square Square { get; set; }
+        public bool Touchable { get; set; }
         string ImageURL { get; set; }
         List<Square> AvailableSquares { get; set; }
         bool MoveTo(Square square);

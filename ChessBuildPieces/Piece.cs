@@ -14,6 +14,7 @@ namespace ChessBuildPieces
         public Square Square { get; set; }
         public List<Square> AvailableSquares { get; set; }
         public Color Color { get; set; }
+        public bool Touchable { get; set; }
         public string ImageURL { get; set; }
 
         public virtual bool PickSquare(int x, int y)
@@ -28,7 +29,7 @@ namespace ChessBuildPieces
                 }
                 else
                 {
-                    if (square.Piece.Color != Color)
+                    if (square.Piece.Color != Color && square.Piece.Touchable!=false)
                     {
                         AvailableSquares.Add(square);
                     }

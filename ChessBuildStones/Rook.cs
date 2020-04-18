@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace ChessBuildStones
 {
-    public class Rook : Piece,IPiece
+    public class Rook : Piece, IPiece
     {
         public Rook() : base()
         {
@@ -19,7 +19,7 @@ namespace ChessBuildStones
 
             for (int i = coordinateX + 1; i < (int)Boards.upperLimit; i++)
             {
-                if(!PickSquare(i, coordinateY))
+                if (!PickSquare(i, coordinateY))
                     break;
             }
 
@@ -46,17 +46,17 @@ namespace ChessBuildStones
         {
             List<Square> squares;
 
-            squares= Board.AllSquares.Select(t => t).Where(t => (t.Coordinate.X == 1 && t.Coordinate.Y == 1) || (t.Coordinate.X == 8 && t.Coordinate.Y == 1)).ToList();
+            squares = Board.AllSquares.Select(t => t).Where(t => (t.Coordinate.X == 1 && t.Coordinate.Y == 1) || (t.Coordinate.X == 8 && t.Coordinate.Y == 1)).ToList();
             foreach (var square in squares)
             {
-                square.Piece = new Rook() { Color = Color.white, ImageURL = Constant.whiteRookImageURL, Square = square };
+                square.Piece = new Rook() { Color = Color.white, ImageURL = Constant.whiteRookImageURL, Square = square, Touchable = true };
             }
             squares.Clear();
 
-            squares= Board.AllSquares.Select(t => t).Where(t => (t.Coordinate.X == 1 && t.Coordinate.Y == 8) || (t.Coordinate.X == 8 && t.Coordinate.Y == 8)).ToList();
+            squares = Board.AllSquares.Select(t => t).Where(t => (t.Coordinate.X == 1 && t.Coordinate.Y == 8) || (t.Coordinate.X == 8 && t.Coordinate.Y == 8)).ToList();
             foreach (var square in squares)
             {
-                square.Piece = new Rook() { Color = Color.black, ImageURL = Constant.blackRookImageURL, Square = square };
+                square.Piece = new Rook() { Color = Color.black, ImageURL = Constant.blackRookImageURL, Square = square, Touchable = true };
             }
         }
     }

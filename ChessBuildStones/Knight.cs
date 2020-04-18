@@ -33,14 +33,14 @@ namespace ChessBuildStones
             squares = Board.AllSquares.Select(t => t).Where(t => (t.Coordinate.X == 2 && t.Coordinate.Y == 1) || (t.Coordinate.X == 7 && t.Coordinate.Y == 1)).ToList();
             foreach (var square in squares)
             {
-                square.Piece = new Knight() { Color = Color.white, ImageURL = Constant.whiteKnightImageURL, Square = square };
+                square.Piece = new Knight() { Color = Color.white, ImageURL = Constant.whiteKnightImageURL, Square = square, Touchable = true };
             }
             squares.Clear();
 
             squares = Board.AllSquares.Select(t => t).Where(t => (t.Coordinate.X == 2 && t.Coordinate.Y == 8) || (t.Coordinate.X == 7 && t.Coordinate.Y == 8)).ToList();
             foreach (var square in squares)
             {
-                square.Piece = new Knight() { Color = Color.black, ImageURL = Constant.blackKnightImageURL, Square = square };
+                square.Piece = new Knight() { Color = Color.black, ImageURL = Constant.blackKnightImageURL, Square = square, Touchable = true };
             }
         }
     }
