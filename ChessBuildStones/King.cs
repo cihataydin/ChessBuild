@@ -31,11 +31,9 @@ namespace ChessBuildStones
 
             square =Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 4 && t.Coordinate.Y == 1).FirstOrDefault();
             square.Piece = new King() { Color = Color.white, ImageURL = Constant.whiteKingImageURL, Square = square };
-            Board.WhitePieces.Add(square.Piece);
 
             square = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 4 && t.Coordinate.Y == 8).FirstOrDefault();
             square.Piece = new King() { Color = Color.black, ImageURL = Constant.blackKingImageURL, Square = square };
-            Board.BlackPieces.Add(square.Piece);
 
         }
     }

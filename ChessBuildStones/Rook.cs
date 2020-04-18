@@ -50,7 +50,6 @@ namespace ChessBuildStones
             foreach (var square in squares)
             {
                 square.Piece = new Rook() { Color = Color.white, ImageURL = Constant.whiteRookImageURL, Square = square };
-                Board.WhitePieces.Add(square.Piece);
             }
             squares.Clear();
 
@@ -58,7 +57,6 @@ namespace ChessBuildStones
             foreach (var square in squares)
             {
                 square.Piece = new Rook() { Color = Color.black, ImageURL = Constant.blackRookImageURL, Square = square };
-                Board.BlackPieces.Add(square.Piece);
             }
         }
     }

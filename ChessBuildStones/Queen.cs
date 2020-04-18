@@ -82,11 +82,9 @@ namespace ChessBuildStones
 
             square = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 5 && t.Coordinate.Y == 1).FirstOrDefault();
             square.Piece = new Queen() { Color = Color.white, ImageURL = Constant.whiteQueenImageURL, Square = square };
-            Board.WhitePieces.Add(square.Piece);
 
             square = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 5 && t.Coordinate.Y == 8).FirstOrDefault();
             square.Piece = new Queen() { Color = Color.black, ImageURL = Constant.blackQueenImageURL, Square = square };
-            Board.BlackPieces.Add(square.Piece);
 
         }
     }

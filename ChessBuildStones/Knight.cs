@@ -34,7 +34,6 @@ namespace ChessBuildStones
             foreach (var square in squares)
             {
                 square.Piece = new Knight() { Color = Color.white, ImageURL = Constant.whiteKnightImageURL, Square = square };
-                Board.WhitePieces.Add(square.Piece);
             }
             squares.Clear();
 
@@ -42,7 +41,6 @@ namespace ChessBuildStones
             foreach (var square in squares)
             {
                 square.Piece = new Knight() { Color = Color.black, ImageURL = Constant.blackKnightImageURL, Square = square };
-                Board.BlackPieces.Add(square.Piece);
             }
         }
     }

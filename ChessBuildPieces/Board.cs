@@ -10,12 +10,12 @@ namespace ChessBuildPieces
         static Board()
         {
             AllSquares = new List<Square>();
-            BlackPieces = new List<IPiece>();
-            WhitePieces = new List<IPiece>();
+            //BlackPieces = new List<IPiece>();
+            //WhitePieces = new List<IPiece>();
         }
         public static List<Square> AllSquares { get; set; }
-        public static List<IPiece> BlackPieces { get; set; }
-        public static List<IPiece> WhitePieces { get; set; }
+        //public static List<IPiece> BlackPieces { get; set; }
+        //public static List<IPiece> WhitePieces { get; set; }
 
         public static void CreateBoard()
         {

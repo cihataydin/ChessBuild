@@ -44,7 +44,6 @@ namespace ChessBuildStones
             foreach (var square in squares)
             {
                 square.Piece = new Pawn() { Color = Color.white, ImageURL = Constant.whitePawnImageURL, Square = square };
-                Board.WhitePieces.Add(square.Piece);
             }
             squares.Clear();
 
@@ -52,7 +51,6 @@ namespace ChessBuildStones
             foreach (var square in squares)
             {
                 square.Piece = new Pawn() { Color = Color.black, ImageURL = Constant.blackPawnImageURL, Square = square };
-                Board.BlackPieces.Add(square.Piece);
             }
         }
 

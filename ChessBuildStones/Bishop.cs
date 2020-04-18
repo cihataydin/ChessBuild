@@ -58,7 +58,6 @@ namespace ChessBuildStones
             foreach (var square in squares)
             {
                 square.Piece = new Bishop() { Color = Color.white, ImageURL = Constant.whiteBishopImageURL, Square = square };
-                Board.WhitePieces.Add(square.Piece);
             }
             squares.Clear();
 
@@ -66,7 +65,6 @@ namespace ChessBuildStones
             foreach (var square in squares)
             {
                 square.Piece = new Bishop() { Color = Color.black, ImageURL = Constant.blackBishopImageURL, Square = square };
-                Board.BlackPieces.Add(square.Piece);
             }
         }
     }
