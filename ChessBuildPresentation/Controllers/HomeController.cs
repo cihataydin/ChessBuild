@@ -52,9 +52,8 @@ namespace ChessBuildPresentation.Controllers
                                     item.Piece.CheckSquare();
                                     item.Piece.MoveTo(square);
                                     HttpContext.Session.Clear();
-                                    return View(Board.AllSquares);
+                                    return RedirectToPage("/Home/Index");//(Board.AllSquares);
                                 }
-
                             }
                         }
                     }
