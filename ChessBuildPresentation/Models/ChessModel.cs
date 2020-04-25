@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace ChessBuildPresentation.Models
 {
-    public static class ChessModel
+    public class ChessModel
     {
-        
+        public ChessModel()
+        {
+            Squares = new List<Square>(); 
+        }
+        public List<Square> Squares;
     }
 }

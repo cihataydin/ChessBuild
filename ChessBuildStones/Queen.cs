@@ -18,6 +18,7 @@ namespace ChessBuildStones
             int coordinateX = Square.Coordinate.X;
             int coordinateY = Square.Coordinate.Y;
             AvailableSquares.Clear();
+            AvailableSquares.Add(Square);
 
             for (int i = coordinateX + 1; i < (int)Boards.upperLimit; i++)
             {
@@ -82,9 +83,11 @@ namespace ChessBuildStones
 
             square = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 5 && t.Coordinate.Y == 1).FirstOrDefault();
             square.Piece = new Queen() { Color = Color.white, ImageURL = Constant.whiteQueenImageURL, Square = square, Touchable = true };
+            Board.WhitePieces.Add(square.Piece);
 
             square = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 5 && t.Coordinate.Y == 8).FirstOrDefault();
             square.Piece = new Queen() { Color = Color.black, ImageURL = Constant.blackQueenImageURL, Square = square, Touchable = true };
+            Board.BlackPieces.Add(square.Piece);
 
         }
     }

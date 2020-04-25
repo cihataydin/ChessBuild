@@ -15,6 +15,7 @@ namespace ChessBuildPresentation.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private ChessModel model = new ChessModel();
         private IPiece pieceRook;
         private IPiece pieceBishop;
         private IPiece pieceKnight;
@@ -26,40 +27,64 @@ namespace ChessBuildPresentation.Controllers
         {
             _logger = logger;
         }
-        
-        public IActionResult Click(int x1, int y1, Color color)
+
+        public IActionResult Click(int instantaneousX, int instantaneousY, Color color)
         {
-            int? Xcoord = HttpContext.Session.GetInt32("Xcoord");
-            int? Ycoord = HttpContext.Session.GetInt32("Ycoord");
-            foreach (var square in Board.AllSquares)
+            int? SessionX = HttpContext.Session.GetInt32("Xcoord");
+            int? SessionY = HttpContext.Session.GetInt32("Ycoord");
+            Square square = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == instantaneousX && t.Coordinate.Y == instantaneousY).FirstOrDefault();
+            if(square != null)
             {
-                if (square.Coordinate.X == x1 && square.Coordinate.Y == y1)
+                if (square.Coordinate.X == instantaneousX && square.Coordinate.Y == instantaneousY)
                 {
-                    if (Xcoord == null && Ycoord == null && square.Piece!=null)
+                    if (SessionX == null && SessionY == null && square.Piece != null)
                     {
-                        HttpContext.Session.SetInt32("Xcoord", x1);
-                        HttpContext.Session.SetInt32("Ycoord", y1);
-                        return View(Board.AllSquares);
+                        HttpContext.Session.SetInt32("Xcoord", instantaneousX);
+                        HttpContext.Session.SetInt32("Ycoord", instantaneousY);
+                        model.Squares = Board.AllSquares;
+                        return View(model);
                     }
                     else
                     {
-                        if(Xcoord!=null && Ycoord != null)
+                        if (SessionX != null && SessionY != null)
                         {
-                            foreach (var item in Board.AllSquares)
+                            Square item = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == SessionX && t.Coordinate.Y == SessionY).FirstOrDefault();
+
+                            if (item.Piece != null)
                             {
-                                if (item.Coordinate.X == Xcoord && item.Coordinate.Y == Ycoord && item.Piece != null)
+                                item.Piece.CheckSquare();
+                                if (item.Piece.Touchable == false)
                                 {
-                                    item.Piece.CheckSquare();
-                                    item.Piece.MoveTo(square);
-                                    HttpContext.Session.Clear();
-                                    return RedirectToPage("/Home/Index");//(Board.AllSquares);
+                                    King king = (King)item.Piece;
+                                    king.CheckCounterPiece(square);
                                 }
+
+                                if (item.Piece.MoveTo(square))
+                                {
+                                    if (!square.Piece.DiscoverCheckToMove())
+                                    {
+                                        square.Piece.MoveBack = true;
+                                        square.Piece.MoveTo(item);
+                                    }
+                                    else
+                                    {
+                                        square.Piece.StateOrder();
+                                    }
+                                    
+                                }
+                                HttpContext.Session.Clear();
+                                
+                                model.Squares = Board.AllSquares;
+                                return View(model);
                             }
+
                         }
                     }
                 }
+
             }
-            return View(Board.AllSquares);
+            model.Squares = Board.AllSquares;
+            return View(model);
         }
 
         public IActionResult Index()
@@ -83,7 +108,8 @@ namespace ChessBuildPresentation.Controllers
             pieceKing = new King();
             pieceKing.InitialPositionSet();
 
-            return View(Board.AllSquares);
+            model.Squares = Board.AllSquares;
+            return View(model);
         }
 
         public IActionResult Privacy()

@@ -13,6 +13,7 @@ namespace ChessBuildStones
             int CoordinateX = Square.Coordinate.X;
             int CoordinateY = Square.Coordinate.Y;
             AvailableSquares.Clear();
+            AvailableSquares.Add(Square);
 
             int two = 2;
             int one = 1;
@@ -34,6 +35,7 @@ namespace ChessBuildStones
             foreach (var square in squares)
             {
                 square.Piece = new Knight() { Color = Color.white, ImageURL = Constant.whiteKnightImageURL, Square = square, Touchable = true };
+                Board.WhitePieces.Add(square.Piece);
             }
             squares.Clear();
 
@@ -41,6 +43,7 @@ namespace ChessBuildStones
             foreach (var square in squares)
             {
                 square.Piece = new Knight() { Color = Color.black, ImageURL = Constant.blackKnightImageURL, Square = square, Touchable = true };
+                Board.BlackPieces.Add(square.Piece);
             }
         }
     }

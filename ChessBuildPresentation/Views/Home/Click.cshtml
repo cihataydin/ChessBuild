@@ -1,4 +1,4 @@
-﻿@model List<ChessBuildPieces.Square>
+﻿@model ChessBuildPresentation.Models.ChessModel
 @{
     Layout = null;
 }
@@ -8,7 +8,7 @@
 {
     for (int x = 1; x < 9; x++)
     {
-        foreach (var square in Model)
+        foreach (var square in Model.Squares)
         {
             if (square.Coordinate.X == x && square.Coordinate.Y == y)
             {
@@ -16,11 +16,11 @@
                 {
                     if (square.Piece == null)
                     {
-                        <img onclick="window.location.href='@Url.Action("Click","Home",new { X1=x,Y1=y,Color=square.Color})'" height="75" width="75" style="position:relative; background-color:saddlebrown" />
+                        <img onclick="window.location.href='@Url.Action("Click","Home",new { instantaneousX=x,instantaneousY=y,Color=square.Color})'" height="75" width="75" style="position:relative; background-color:saddlebrown" />
                     }
                     else
                     {
-                        <img onclick="window.location.href='@Url.Action("Click","Home",new { X1=x,Y1=y,Color=square.Color})'" src="@square.Piece.ImageURL" height="75" width="75" style="position:relative; background-color:saddlebrown" />
+                        <img onclick="window.location.href='@Url.Action("Click","Home",new { instantaneousX=x,instantaneousY=y,Color=square.Color})'" src="@square.Piece.ImageURL" height="75" width="75" style="position:relative; background-color:saddlebrown" />
 
                     }
                 }
@@ -28,11 +28,11 @@
                 {
                     if (square.Piece == null)
                     {
-                        <img onclick="window.location.href='@Url.Action("Click","Home",new { X1=x,Y1=y,Color=square.Color})'" height="75" width="75" style="position:relative; background-color:white" />
+                        <img onclick="window.location.href='@Url.Action("Click","Home",new { instantaneousX=x,instantaneousY=y,Color=square.Color})'" height="75" width="75" style="position:relative; background-color:white" />
                     }
                     else
                     {
-                        <img onclick="window.location.href='@Url.Action("Click","Home",new { X1=x,Y1=y,Color=square.Color})'" src="@square.Piece.ImageURL" height="75" width="75" style="position:relative; background-color:white" />
+                        <img onclick="window.location.href='@Url.Action("Click","Home",new { instantaneousX=x,instantaneousY=y,Color=square.Color})'" src="@square.Piece.ImageURL" height="75" width="75" style="position:relative; background-color:white" />
 
                     }
                 }
