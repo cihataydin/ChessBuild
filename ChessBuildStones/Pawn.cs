@@ -11,8 +11,10 @@ namespace ChessBuildStones
         public Pawn():base()
         {
             OldSquares = new List<Square>();
+            EmptyAvailableSquares = new List<Square>();
         }
         public List<Square> OldSquares { get; set; }
+        public List<Square> EmptyAvailableSquares { get; set; }
         public void CheckSquare()
         {
             int coordinateX = Square.Coordinate.X;
@@ -39,7 +41,6 @@ namespace ChessBuildStones
                 if (Square.Coordinate.Y == 7)
                     PickSquare(coordinateX, coordinateY - two);
             }
-
         }
 
         public void InitialPositionSet()
@@ -76,7 +77,7 @@ namespace ChessBuildStones
                 else
                 {
                     if (square.Piece == null)
-                        AvailableSquares.Add(square);
+                       EmptyAvailableSquares.Add(square);
                     return false;
                 }
             }
@@ -87,7 +88,7 @@ namespace ChessBuildStones
             OldSquares.Add(Square);
             IPiece piece = null;
 
-            if ((AvailableSquares.Contains(square) || (OldSquares.Contains(square) && MoveBack== true))  && FreeToMove != false && Square!=square)
+            if (( EmptyAvailableSquares.Contains(square)|| AvailableSquares.Contains(square) || (OldSquares.Contains(square) && MoveBack== true))  && FreeToMove != false && Square!=square)
             {
                 Square initialSquare = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == Square.Coordinate.X && t.Coordinate.Y == Square.Coordinate.Y).FirstOrDefault();
 
@@ -144,7 +145,6 @@ namespace ChessBuildStones
                 }
             }
             return false;
-
         }
     }
 }

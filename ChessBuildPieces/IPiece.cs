@@ -14,6 +14,7 @@ namespace ChessBuildPieces
         List<Square> AvailableSquares { get; set; }
         public bool MoveBack { get; set; }
         public IPiece BeforePiece { get; set; }
+        public int MoveCounter { get; set; }
         bool MoveTo(Square square);
         void CheckSquare();
         bool PickSquare(int x,int y);

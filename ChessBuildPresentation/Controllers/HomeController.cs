@@ -30,14 +30,14 @@ namespace ChessBuildPresentation.Controllers
 
         public IActionResult Click(int instantaneousX, int instantaneousY, Color color)
         {
-            int? SessionX = HttpContext.Session.GetInt32("Xcoord");
-            int? SessionY = HttpContext.Session.GetInt32("Ycoord");
-            Square square = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == instantaneousX && t.Coordinate.Y == instantaneousY).FirstOrDefault();
-            if(square != null)
+            int? sessionX = HttpContext.Session.GetInt32("Xcoord");
+            int? sessionY = HttpContext.Session.GetInt32("Ycoord");
+            Square secondClickSquare = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == instantaneousX && t.Coordinate.Y == instantaneousY).FirstOrDefault();
+            if(secondClickSquare != null)
             {
-                if (square.Coordinate.X == instantaneousX && square.Coordinate.Y == instantaneousY)
+                if (secondClickSquare.Coordinate.X == instantaneousX && secondClickSquare.Coordinate.Y == instantaneousY)
                 {
-                    if (SessionX == null && SessionY == null && square.Piece != null)
+                    if (sessionX == null && sessionY == null && secondClickSquare.Piece != null)
                     {
                         HttpContext.Session.SetInt32("Xcoord", instantaneousX);
                         HttpContext.Session.SetInt32("Ycoord", instantaneousY);
@@ -46,34 +46,41 @@ namespace ChessBuildPresentation.Controllers
                     }
                     else
                     {
-                        if (SessionX != null && SessionY != null)
+                        if (sessionX != null && sessionY != null)
                         {
-                            Square item = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == SessionX && t.Coordinate.Y == SessionY).FirstOrDefault();
+                            Square firstClickSquare = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == sessionX && t.Coordinate.Y == sessionY).FirstOrDefault();
 
-                            if (item.Piece != null)
+                            if (firstClickSquare.Piece != null)
                             {
-                                item.Piece.CheckSquare();
-                                if (item.Piece.Touchable == false)
+                                firstClickSquare.Piece.CheckSquare();
+                                if (firstClickSquare.Piece.Touchable == false)
                                 {
-                                    King king = (King)item.Piece;
-                                    king.CheckCounterPiece(square);
-                                }
+                                    King king = (King)firstClickSquare.Piece;
+                                    king.CheckCounterPiece(secondClickSquare);
+                                    if (firstClickSquare.Coordinate.X == 4 && (firstClickSquare.Coordinate.Y == 1 || firstClickSquare.Coordinate.Y==8) && secondClickSquare.Coordinate.X == 2 && (secondClickSquare.Coordinate.Y == 1 || secondClickSquare.Coordinate.Y==8))
+                                        king.ShortCastle();
+                                    else if(firstClickSquare.Coordinate.X == 4 && (firstClickSquare.Coordinate.Y == 1 || firstClickSquare.Coordinate.Y == 8) && secondClickSquare.Coordinate.X == 6 && (secondClickSquare.Coordinate.Y == 1 || secondClickSquare.Coordinate.Y == 8))
+                                        king.LongCastle();
 
-                                if (item.Piece.MoveTo(square))
-                                {
-                                    if (!square.Piece.DiscoverCheckToMove())
-                                    {
-                                        square.Piece.MoveBack = true;
-                                        square.Piece.MoveTo(item);
-                                    }
-                                    else
-                                    {
-                                        square.Piece.StateOrder();
-                                    }
-                                    
                                 }
-                                HttpContext.Session.Clear();
+                                if (firstClickSquare.Piece != null)
+                                {
+                                    if (firstClickSquare.Piece.MoveTo(secondClickSquare))
+                                    {
+                                        if (!secondClickSquare.Piece.DiscoverCheckToMove())
+                                        {
+                                            secondClickSquare.Piece.MoveBack = true;
+                                            secondClickSquare.Piece.MoveTo(firstClickSquare);
+                                        }
+                                        else
+                                        {
+                                            secondClickSquare.Piece.StateOrder();
+                                        }
+
+                                    }
+                                }
                                 
+                                HttpContext.Session.Clear();
                                 model.Squares = Board.AllSquares;
                                 return View(model);
                             }

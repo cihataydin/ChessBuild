@@ -21,6 +21,7 @@ namespace ChessBuildPieces
         public string ImageURL { get; set; }
         public bool MoveBack { get; set; }
         public IPiece BeforePiece { get; set; }
+        public int MoveCounter { get; set; }
         public void StateOrder()
         {
             if (Color == Color.black)
@@ -63,6 +64,7 @@ namespace ChessBuildPieces
             IPiece piece = null;
             if (AvailableSquares.Contains(square) && FreeToMove != false && Square != square)
             {
+                MoveCounter++;
                 Square initialSquare = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == Square.Coordinate.X && t.Coordinate.Y == Square.Coordinate.Y).FirstOrDefault();
 
 
@@ -73,6 +75,7 @@ namespace ChessBuildPieces
 
                 if (MoveBack == false)
                 {
+                    
                     BeforePiece = targetSquare.Piece;
                     if (targetSquare.Piece != null)
                     {
@@ -84,6 +87,7 @@ namespace ChessBuildPieces
                 }
                 else
                 {
+                    MoveCounter--;
                     initialSquare.Piece = BeforePiece;
                     if (initialSquare.Piece != null)
                     {
@@ -140,7 +144,6 @@ namespace ChessBuildPieces
                     return false;
                 }
             }
-
             return true;
         }
     }
