@@ -2,44 +2,52 @@
 @{
     Layout = null;
 }
+<head>
+    <script>
+        var x = new XMLHttpRequest();
+        var m = new Date(0);
+        x.setRequestHeader("If-Modified-Since", m);
+    </script>   
+</head>
+<body>
 
-
-@for (int y = 1; y < 9; y++)
-{
-    for (int x = 1; x < 9; x++)
+    @for (int y = 1; y < 9; y++)
     {
-        foreach (var square in Model.Squares)
+        for (int x = 1; x < 9; x++)
         {
-            if (square.Coordinate.X == x && square.Coordinate.Y == y)
+            foreach (var square in Model.Squares)
             {
-                if (square.Color == ChessBuildPieces.Color.black)
+                if (square.Coordinate.X == x && square.Coordinate.Y == y)
                 {
-                    if (square.Piece == null)
+                    if (square.Color == ChessBuildPieces.Color.black)
                     {
-                        <img onclick="window.location.href='@Url.Action("Click","Home",new { instantaneousX=x,instantaneousY=y,Color=square.Color})'" height="75" width="75" style="position:relative; background-color:saddlebrown" />
+                        if (square.Piece == null)
+                        {
+                            <img onclick="window.location.href='@Url.Action("Click","Home",new { instantaneousX=x,instantaneousY=y,Color=square.Color})'" height="75" width="75" style="position:relative; background-color:saddlebrown" />
+                        }
+                        else
+                        {
+                            <img onclick="window.location.href='@Url.Action("Click","Home",new { instantaneousX=x,instantaneousY=y,Color=square.Color})'" src="@square.Piece.ImageURL" height="75" width="75" style="position:relative; background-color:saddlebrown" />
+
+                        }
                     }
                     else
                     {
-                        <img onclick="window.location.href='@Url.Action("Click","Home",new { instantaneousX=x,instantaneousY=y,Color=square.Color})'" src="@square.Piece.ImageURL" height="75" width="75" style="position:relative; background-color:saddlebrown" />
+                        if (square.Piece == null)
+                        {
+                            <img onclick="window.location.href='@Url.Action("Click","Home",new { instantaneousX=x,instantaneousY=y,Color=square.Color})'" height="75" width="75" style="position:relative; background-color:white" />
+                        }
+                        else
+                        {
+                            <img onclick="window.location.href='@Url.Action("Click","Home",new { instantaneousX=x,instantaneousY=y,Color=square.Color})'" src="@square.Piece.ImageURL" height="75" width="75" style="position:relative; background-color:white" />
 
+                        }
                     }
+
                 }
-                else
-                {
-                    if (square.Piece == null)
-                    {
-                        <img onclick="window.location.href='@Url.Action("Click","Home",new { instantaneousX=x,instantaneousY=y,Color=square.Color})'" height="75" width="75" style="position:relative; background-color:white" />
-                    }
-                    else
-                    {
-                        <img onclick="window.location.href='@Url.Action("Click","Home",new { instantaneousX=x,instantaneousY=y,Color=square.Color})'" src="@square.Piece.ImageURL" height="75" width="75" style="position:relative; background-color:white" />
-
-                    }
-                }
-
             }
         }
+        <br />
     }
-    <br />
-}
 
+</body>
