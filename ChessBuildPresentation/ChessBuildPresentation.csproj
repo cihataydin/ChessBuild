@@ -7,12 +7,16 @@
   <ItemGroup>
     <PackageReference Include="jQuery" Version="3.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ChessBuild.DAL\ChessBuild.DAL.csproj" />
     <ProjectReference Include="..\ChessBuildPieces\ChessBuildPieces.csproj" />
-    <ProjectReference Include="..\ChessBuildStones\ChessBuildStones.csproj" />
   </ItemGroup>
 
 

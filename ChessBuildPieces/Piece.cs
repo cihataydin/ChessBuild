@@ -1,7 +1,10 @@
-﻿using System;
+﻿using ChessBuildPieces.Stones;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace ChessBuildPieces
 {
@@ -9,48 +12,45 @@ namespace ChessBuildPieces
     {
         public Piece()
         {
-            AvailableSquares = new List<Square>();
-            FreeToMove = true;
-            MoveBack = false;
+
         }
-        public Square Square { get; set; }
-        public List<Square> AvailableSquares { get; set; }
+        public string Name { get; set; }
         public Color Color { get; set; }
         public bool Touchable { get; set; }
         public bool? FreeToMove { get; set; }
         public string ImageURL { get; set; }
         public bool MoveBack { get; set; }
-        public IPiece BeforePiece { get; set; }
+        public Piece BeforePiece { get; set; }
         public int MoveCounter { get; set; }
-        public void StateOrder()
+        public void StateOrder(Board board)
         {
             if (Color == Color.black)
             {
-                Board.StateBlackPieces(false);
-                Board.StateWhitePieces(true);
+                board.StateBlackPieces(false);
+                board.StateWhitePieces(true);
             }
             else
             {
-                Board.StateWhitePieces(false);
-                Board.StateBlackPieces(true);
+                board.StateWhitePieces(false);
+                board.StateBlackPieces(true);
             }
         }
 
-        public virtual bool PickSquare(int x, int y)
+        public virtual bool PickSquare(int x, int y, Board board)
         {
-            Square square = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == x && t.Coordinate.Y == y).FirstOrDefault();
+            Square square = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == x && t.Coordinate.Y == y).FirstOrDefault();
             if (square != null)
             {
                 if (square.Piece == null)
                 {
-                    AvailableSquares.Add(square);
+                    board.AvailableSquares.Add(square);
                     return true;
                 }
                 else
                 {
                     if (square.Piece.Color != Color)
                     {
-                        AvailableSquares.Add(square);
+                        board.AvailableSquares.Add(square);
                     }
                     return false;
                 }
@@ -59,44 +59,30 @@ namespace ChessBuildPieces
 
         }
 
-        public virtual bool MoveTo(Square square)
+        public virtual bool MoveTo(Square square, Board board)
         {
-            IPiece piece = null;
-            if (AvailableSquares.Contains(square) && FreeToMove != false && Square != square)
+            CheckSquare(board);
+            Piece piece = null;
+            Square currentSquare = board.AllSquares.Select(t => t).Where(t => ReferenceEquals(this, t.Piece)).FirstOrDefault();
+            if (board.AvailableSquares.Contains(square) && FreeToMove != false && currentSquare != square)
             {
                 MoveCounter++;
-                Square initialSquare = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == Square.Coordinate.X && t.Coordinate.Y == Square.Coordinate.Y).FirstOrDefault();
+                Square initialSquare = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == currentSquare.Coordinate.X && t.Coordinate.Y == currentSquare.Coordinate.Y).FirstOrDefault();
 
 
-                Square targetSquare = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == square.Coordinate.X && t.Coordinate.Y == square.Coordinate.Y).FirstOrDefault();
+                Square targetSquare = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == square.Coordinate.X && t.Coordinate.Y == square.Coordinate.Y).FirstOrDefault();
 
                 piece = initialSquare.Piece;
                 initialSquare.Piece = null;
 
                 if (MoveBack == false)
                 {
-                    
                     BeforePiece = targetSquare.Piece;
-                    if (targetSquare.Piece != null)
-                    {
-                        if (targetSquare.Piece.Color == Color.black)
-                            Board.BlackPieces.Remove(targetSquare.Piece);
-                        else
-                            Board.WhitePieces.Remove(targetSquare.Piece);
-                    }    
                 }
                 else
                 {
                     MoveCounter--;
                     initialSquare.Piece = BeforePiece;
-                    if (initialSquare.Piece != null)
-                    {
-                        if (initialSquare.Piece.Color == Color.black)
-                            Board.BlackPieces.Add(initialSquare.Piece);
-                        else
-                            Board.WhitePieces.Add(initialSquare.Piece);
-                    }
-                    
                     BeforePiece = null;
                     MoveBack = false;
                 }
@@ -106,7 +92,7 @@ namespace ChessBuildPieces
                     if (targetSquare.Piece.Touchable == true)
                     {
                         targetSquare.Piece = piece;
-                        Square = square;
+                        currentSquare = square;
                         return true;
                     }
                     else
@@ -118,33 +104,107 @@ namespace ChessBuildPieces
                 else
                 {
                     targetSquare.Piece = piece;
-                    Square = square;
+                    currentSquare = square;
                     return true;
                 }
             }
             return false;
         }
-        public bool DiscoverCheckToMove()
+
+        public bool DiscoverCheckToMove(Board board)
         {
-            IPiece blackKing = Board.BlackPieces.Select(t => t).Where(t => t.Touchable == false).FirstOrDefault();
-            foreach (var piece in Board.WhitePieces)
+            Piece piece1 = null;
+            Piece piece2 = null;
+            board.CastAll();
+            List<Piece> pieces = board.AllSquares.Select(t => t.Piece).Where(t => t != null).ToList();
+            List<Square> squares = board.AllSquares.Select(t => t).Where(t => t.Piece != null).ToList();
+            Square square1 = squares.Select(t => t).Where(t => t.Piece.Touchable == false && t.Piece.Color == Color.black).FirstOrDefault();
+            foreach (var piece in pieces)
             {
-                piece.CheckSquare();
-                if (piece.AvailableSquares.Contains(blackKing.Square) && Color == Color.black)
+
+                Square sq = board.AllSquares.Select(t => t).Where(t => t.Piece==piece).FirstOrDefault();
+                switch (piece.Name)
                 {
-                    return false;
+                    case "Bishop":
+                        piece1 = sq.Bishop;
+                        break;                        
+                    case "King":
+                        piece1 = sq.King;
+                        break;
+                    case "Knight":
+                        piece1 = sq.Knight;
+                        break;
+                    case "Pawn":
+                        piece1 = sq.Pawn;
+                        break;
+                    case "Queen":
+                        piece1 = sq.Queen;
+                        break;
+                    case "Rook":
+                        piece1 = sq.Rook;
+                        break;
+                    default:
+                        break;
                 }
+                if(piece1 != null)
+                {
+                    piece1.CheckSquare(board);
+                    if (board.AvailableSquares.Contains(square1) && Color == Color.black)
+                    {
+                        board.TakeBackCastAll();
+                        return false;
+                    }
+                        
+                }
+                
             }
-            IPiece whiteKing = Board.WhitePieces.Select(t => t).Where(t => t.Touchable == false).FirstOrDefault();
-            foreach (var piece in Board.BlackPieces)
+
+            Square square2 = squares.Select(t => t).Where(t => t.Piece.Touchable == false && t.Piece.Color == Color.white).FirstOrDefault();
+            foreach (var piece in pieces)
             {
-                piece.CheckSquare();
-                if (piece.AvailableSquares.Contains(whiteKing.Square) && Color == Color.white)
+                Square sq = board.AllSquares.Select(t => t).Where(t => t.Piece == piece).FirstOrDefault();
+                switch (piece.Name)
                 {
-                    return false;
+                    case "Bishop":
+                        piece2 = sq.Bishop;
+                        break;
+                    case "King":
+                        piece2 = sq.King;
+                        break;
+                    case "Knight":
+                        piece2 = sq.Knight;
+                        break;
+                    case "Pawn":
+                        piece2 = sq.Pawn;
+                        break;
+                    case "Queen":
+                        piece2 = sq.Queen;
+                        break;
+                    case "Rook":
+                        piece2 = sq.Rook;
+                        break;
+                    default:
+                        break;
                 }
+                if (piece2 != null)
+                {
+                    piece2.CheckSquare(board);
+                    if (board.AvailableSquares.Contains(square2) && Color == Color.white)
+                    {
+                        board.TakeBackCastAll();
+                        return false;
+                    }
+                        
+                }
+
             }
+            board.TakeBackCastAll();
             return true;
+
+
         }
+
+        public virtual void CheckSquare(Board board) { }
+        public virtual void InitialPositionSet(Board board) { }
     }
 }

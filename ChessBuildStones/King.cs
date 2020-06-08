@@ -8,76 +8,83 @@ namespace ChessBuildStones
 {
     public class King : Piece, IPiece
     {
-        public King() : base()
+        public King()
         {
-
+            Name = "King";
+            AvailableSquares = new List<Square>();
+            FreeToMove = true;
+            MoveBack = false;
         }
 
-        public void CheckSquare()
+        public override void CheckSquare(ref Board board)
         {
-            int coordinateX = Square.Coordinate.X;
-            int coordinateY = Square.Coordinate.Y;
+            Square currentSquare = board.AllSquares.Select(t => t).Where(t => ReferenceEquals(this, t.Piece)).FirstOrDefault();
+            int coordinateX = currentSquare.Coordinate.X;
+            int coordinateY = currentSquare.Coordinate.Y;
             AvailableSquares.Clear();
-            AvailableSquares.Add(Square);
+            AvailableSquares.Add(currentSquare);
 
 
             int one = 1;
-            PickSquare(coordinateX + one, coordinateY);
-            PickSquare(coordinateX, coordinateY + one);
-            PickSquare(coordinateX - one, coordinateY);
-            PickSquare(coordinateX, coordinateY - one);
-            PickSquare(coordinateX + one, coordinateY + one);
-            PickSquare(coordinateX + one, coordinateY - one);
-            PickSquare(coordinateX - one, coordinateY + one);
-            PickSquare(coordinateX - one, coordinateY - one);
+            PickSquare(coordinateX + one, coordinateY, ref board);
+            PickSquare(coordinateX, coordinateY + one, ref board);
+            PickSquare(coordinateX - one, coordinateY, ref board);
+            PickSquare(coordinateX, coordinateY - one, ref board);
+            PickSquare(coordinateX + one, coordinateY + one, ref board);
+            PickSquare(coordinateX + one, coordinateY - one, ref board);
+            PickSquare(coordinateX - one, coordinateY + one, ref board);
+            PickSquare(coordinateX - one, coordinateY - one, ref board);
 
             if (MoveCounter == 0)
             {
                 if (Color == Color.black)
                 {
-                    Square square = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 2 && t.Coordinate.Y == 8).FirstOrDefault();
-                    Square square1 = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 6 && t.Coordinate.Y == 8).FirstOrDefault();
+                    Square square = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 2 && t.Coordinate.Y == 8).FirstOrDefault();
+                    Square square1 = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 6 && t.Coordinate.Y == 8).FirstOrDefault();
                     AvailableSquares.Add(square);
                     AvailableSquares.Add(square1);
                 }
                 else
                 {
-                    Square square = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 2 && t.Coordinate.Y == 1).FirstOrDefault();
-                    Square square1 = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 6 && t.Coordinate.Y == 1).FirstOrDefault();
+                    Square square = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 2 && t.Coordinate.Y == 1).FirstOrDefault();
+                    Square square1 = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 6 && t.Coordinate.Y == 1).FirstOrDefault();
                     AvailableSquares.Add(square);
                     AvailableSquares.Add(square1);
                 }
             }
         }
 
-        public void InitialPositionSet()
+        public override void InitialPositionSet(ref Board board)
         {
             Square square;
 
-            square = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 4 && t.Coordinate.Y == 1).FirstOrDefault();
-            square.Piece = new King() { Color = Color.white, ImageURL = Constant.whiteKingImageURL, Square = square, Touchable = false };
-            Board.WhitePieces.Add(square.Piece);
+            square = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 4 && t.Coordinate.Y == 1).FirstOrDefault();
+            square.Piece = new King() { Color = Color.white, ImageURL = Constant.whiteKingImageURL, Touchable = false };
+            board.WhitePieces.Add(square.Piece);
 
-            square = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 4 && t.Coordinate.Y == 8).FirstOrDefault();
-            square.Piece = new King() { Color = Color.black, ImageURL = Constant.blackKingImageURL, Square = square, Touchable = false };
-            Board.BlackPieces.Add(square.Piece);
+            square = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 4 && t.Coordinate.Y == 8).FirstOrDefault();
+            square.Piece = new King() { Color = Color.black, ImageURL = Constant.blackKingImageURL, Touchable = false };
+            board.BlackPieces.Add(square.Piece);
         }
-        public void ShortCastle()
+        public void ShortCastle(ref Board board)
         {
+            Square currentSquare = board.AllSquares.Select(t => t).Where(t => ReferenceEquals(this, t.Piece)).FirstOrDefault();
+            
             if (Color == Color.black)
             {
-                IPiece blackRook = Board.BlackPieces.Select(t => t).Where(t => t.Square.Coordinate.X == 1 && t.Square.Coordinate.Y == 8).FirstOrDefault();
-                Square targetSquareForBlack = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 2 && t.Coordinate.Y == 8).FirstOrDefault();
-                Square interSquareForBlack = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 3 && t.Coordinate.Y == 8).FirstOrDefault();
+                Square blackRookSquare = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 1 && t.Coordinate.Y == 8).FirstOrDefault();
+                Piece blackRook = board.BlackPieces.Select(t => t).Where(t => ReferenceEquals(t,blackRookSquare.Piece)).FirstOrDefault();
+                Square targetSquareForBlack = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 2 && t.Coordinate.Y == 8).FirstOrDefault();
+                Square interSquareForBlack = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 3 && t.Coordinate.Y == 8).FirstOrDefault();
 
                 if (blackRook != null)
                 {
                     if (blackRook.MoveCounter == 0 && MoveCounter == 0 && targetSquareForBlack.Piece == null && interSquareForBlack.Piece == null)
                     {
-                        if (CheckCounterPiece(interSquareForBlack) && CheckCounterPiece(Square) && CheckCounterPiece(targetSquareForBlack))
+                        if (CheckCounterPiece(interSquareForBlack, ref board) && CheckCounterPiece(currentSquare, ref board) && CheckCounterPiece(targetSquareForBlack, ref board))
                         {
-                            MoveTo(targetSquareForBlack);
-                            blackRook.MoveTo(interSquareForBlack);
+                            MoveTo(targetSquareForBlack, ref board);
+                            blackRook.MoveTo(interSquareForBlack, ref board);
                         }
 
                     }
@@ -85,40 +92,46 @@ namespace ChessBuildStones
             }
             else
             {
-                IPiece whiteRook = Board.WhitePieces.Select(t => t).Where(t => t.Square.Coordinate.X == 1 && t.Square.Coordinate.Y == 1).FirstOrDefault();
-                Square interSquareForWhite = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 3 && t.Coordinate.Y == 1).FirstOrDefault();
-                Square targetSquareForWhite = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 2 && t.Coordinate.Y == 1).FirstOrDefault();
+                Square whiteRookSquare = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 1 && t.Coordinate.Y == 1).FirstOrDefault();
+                Piece whiteRook = board.WhitePieces.Select(t => t).Where(t => ReferenceEquals(t, whiteRookSquare.Piece)).FirstOrDefault();
+                Square interSquareForWhite = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 3 && t.Coordinate.Y == 1).FirstOrDefault();
+                Square targetSquareForWhite = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 2 && t.Coordinate.Y == 1).FirstOrDefault();
 
                 if (whiteRook != null)
                 {
                     if (whiteRook.MoveCounter == 0 && MoveCounter == 0 && targetSquareForWhite.Piece == null && interSquareForWhite.Piece == null)
                     {
-                        if (CheckCounterPiece(Square) && CheckCounterPiece(interSquareForWhite) && CheckCounterPiece(targetSquareForWhite))
+                        if (CheckCounterPiece(currentSquare, ref board) && CheckCounterPiece(interSquareForWhite, ref board) && CheckCounterPiece(targetSquareForWhite, ref board))
                         {
-                            MoveTo(targetSquareForWhite);
-                            whiteRook.MoveTo(interSquareForWhite);
+                            MoveTo(targetSquareForWhite, ref board);
+                            whiteRook.MoveTo(interSquareForWhite, ref board);
                         }
                     }
                 }
             }
         }
 
-        public void LongCastle()
+        public void LongCastle(ref Board board)
         {
+
+            Square currentSquare = board.AllSquares.Select(t => t).Where(t => ReferenceEquals(this, t.Piece)).FirstOrDefault();
+
             if (Color == Color.black)
             {
-                IPiece blackRook = Board.BlackPieces.Select(t => t).Where(t => t.Square.Coordinate.X == 8 && t.Square.Coordinate.Y == 8).FirstOrDefault();
-                Square targetSquareForBlack = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 6 && t.Coordinate.Y == 8).FirstOrDefault();
-                Square intervalSquareForBlack = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 5 && t.Coordinate.Y == 8).FirstOrDefault();
+                Square blackRookSquare = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 1 && t.Coordinate.Y == 8).FirstOrDefault();
+                Piece blackRook = board.BlackPieces.Select(t => t).Where(t => ReferenceEquals(t, blackRookSquare.Piece)).FirstOrDefault();
+
+                Square targetSquareForBlack = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 6 && t.Coordinate.Y == 8).FirstOrDefault();
+                Square intervalSquareForBlack = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 5 && t.Coordinate.Y == 8).FirstOrDefault();
 
                 if (blackRook != null)
                 {
                     if (blackRook.MoveCounter == 0 && MoveCounter == 0 && targetSquareForBlack.Piece == null && intervalSquareForBlack.Piece == null)
                     {
-                        if (CheckCounterPiece(intervalSquareForBlack) && CheckCounterPiece(Square) && CheckCounterPiece(targetSquareForBlack))
+                        if (CheckCounterPiece(intervalSquareForBlack, ref board) && CheckCounterPiece(currentSquare, ref board) && CheckCounterPiece(targetSquareForBlack, ref board))
                         {
-                            MoveTo(targetSquareForBlack);
-                            blackRook.MoveTo(intervalSquareForBlack);
+                            MoveTo(targetSquareForBlack, ref board);
+                            blackRook.MoveTo(intervalSquareForBlack, ref board);
                         }
 
                     }
@@ -127,36 +140,40 @@ namespace ChessBuildStones
             }
             else
             {
-                IPiece whiteRook = Board.WhitePieces.Select(t => t).Where(t => t.Square.Coordinate.X == 8 && t.Square.Coordinate.Y == 1).FirstOrDefault();
-                Square intervalSquareForWhite = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 5 && t.Coordinate.Y == 1).FirstOrDefault();
-                Square targetSquareForWhite = Board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 6 && t.Coordinate.Y == 1).FirstOrDefault();
+                Square whiteRookSquare = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 8 && t.Coordinate.Y == 1).FirstOrDefault();
+                Piece whiteRook = board.WhitePieces.Select(t => t).Where(t => ReferenceEquals(t, whiteRookSquare.Piece)).FirstOrDefault();
+                Square intervalSquareForWhite = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 5 && t.Coordinate.Y == 1).FirstOrDefault();
+                Square targetSquareForWhite = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == 6 && t.Coordinate.Y == 1).FirstOrDefault();
 
                 if (whiteRook != null)
                 {
                     if (whiteRook.MoveCounter == 0 && MoveCounter == 0 && targetSquareForWhite.Piece == null && intervalSquareForWhite.Piece == null)
                     {
-                        if (CheckCounterPiece(Square) && CheckCounterPiece(intervalSquareForWhite) && CheckCounterPiece(targetSquareForWhite))
+                        if (CheckCounterPiece(currentSquare, ref board) && CheckCounterPiece(intervalSquareForWhite, ref board) && CheckCounterPiece(targetSquareForWhite, ref board))
                         {
-                            MoveTo(targetSquareForWhite);
-                            whiteRook.MoveTo(intervalSquareForWhite);
+                            MoveTo(targetSquareForWhite, ref board);
+                            whiteRook.MoveTo(intervalSquareForWhite, ref board);
                         }
                     }
                 }
             }
         }
 
-        public bool CheckCounterPiece(Square square)
+        public bool CheckCounterPiece(Square square, ref Board board)
         {
+            Square targetSquare = board.AllSquares.Select(t => t).Where(t => t.Piece == square.Piece).FirstOrDefault();
+
             if (Color == Color.black)
             {
-                foreach (var piece in Board.WhitePieces)
+                foreach (var piece in board.WhitePieces)
                 {
-                    piece.CheckSquare();
+                    
+                    piece.CheckSquare(ref board);
                     if (piece.AvailableSquares.Contains(square))
                     {
                         if (square.Piece != null)
                         {
-                            if (square != square.Piece.Square)
+                            if (square != targetSquare)
                             {
                                 if (AvailableSquares.Contains(square))
                                     AvailableSquares.Remove(square);
@@ -174,14 +191,14 @@ namespace ChessBuildStones
             }
             else
             {
-                foreach (var piece in Board.BlackPieces)
+                foreach (var piece in board.BlackPieces)
                 {
-                    piece.CheckSquare();
+                    piece.CheckSquare(ref board);
                     if (piece.AvailableSquares.Contains(square))
                     {
                         if (square.Piece != null)
                         {
-                            if (square != square.Piece.Square)
+                            if (square != targetSquare)
                             {
                                 if (AvailableSquares.Contains(square))
                                     AvailableSquares.Remove(square);

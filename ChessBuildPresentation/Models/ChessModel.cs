@@ -10,7 +10,7 @@ namespace ChessBuildPresentation.Models
     {
         public ChessModel()
         {
-            Squares = new List<Square>(); 
+            Squares = new List<Square>();
         }
         public List<Square> Squares;
     }

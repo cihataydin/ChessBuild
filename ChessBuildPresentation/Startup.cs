@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 
 namespace ChessBuildPresentation
 {
@@ -56,6 +57,12 @@ namespace ChessBuildPresentation
                     name: "default",
                     pattern: "{controller=Home}/{action=Click}/{id?}");
             });
+
+            //JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            //{
+            //    Formatting = Formatting.Indented,
+            //    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            //};
         }
     }
 }

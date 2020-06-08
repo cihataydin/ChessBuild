@@ -1,0 +1,54 @@
+﻿body {
+    
+}
+
+header{
+    height: 10%;
+    background-color:green
+}
+
+footer{
+    height: 10%;
+    background-color:green
+
+}
+
+#board{
+    position:absolute;
+    left:350px;
+    top:100px;
+    border:2px  #ff6a00;
+    
+}
+
+#menu {
+    height:80%;
+    width: 280px;
+    margin-bottom: 50px;
+}
+
+#menu ul {
+    margin: 0 0 0 2px;
+    padding: 20px 0 0 0;
+    list-style: none;
+}
+
+#menu ul li {
+    padding: 0px;
+    margin: 0 0 10px 0;
+}
+
+#menu ul li a {
+    display: block;
+    padding: 15px 0 5px 30px;
+    font-size: 16px;
+    text-decoration: none;
+    color: #CCC;
+    font-weight: bold;
+    outline: none;
+    background: url(images/templatemo_menu_divider.png) left bottom no-repeat;
+}
+
+#menu li a:hover {
+    padding-left: 40px;
+}

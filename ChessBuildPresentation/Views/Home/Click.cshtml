@@ -2,71 +2,112 @@
 @{
     Layout = null;
 }
-<head>
-    <script>
-        var x = new XMLHttpRequest();
-        var m = new Date(0);
-        x.setRequestHeader("If-Modified-Since", m);
-         //$(function () {
-            //    $(".img").click(function () {
-            //        var data1 = $(".img").attr("value");
-            //        var data2 = $(".img").attr("value2");
-            //        var data3 = $(".img").attr("color");
-            //        $.ajax({
-            //            url: "/Home/Index",
-            //            data: { x: data1, y: data2, color: data3 },
-            //            method: "POST",
-            //            //contentType: "application/json;charset=utf-8",
-            //            success: function () {
-            //                console.log(61);
-            //            }, error: function () {
-            //                alert("hata olustu");
-            //            }, complete: function () {
-            //            }
-            //        });
-            //    });
-            //});
-    </script>   
-</head>
-<body>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            //var x = new XMLHttpRequest();
+            //var m = new Date(0);
+            //x.open("POST","http://localhost:44358")
+            //x.setRequestHeader("If-Modified-Since", m);
 
-    @for (int y = 1; y < 9; y++)
-    {
-        for (int x = 1; x < 9; x++)
-        {
-            foreach (var square in Model.Squares)
+            //Before ajax used
+            //onclick="window.location.href='@@Url.Action("Click","Home",new { instantaneousX=x,instantaneousY=y})'"
+            $(function () {
+                $("img").click(function () {
+                    var data1 = $(this).attr("valuex");
+                    var data2 = $(this).attr("valuey");
+                    $.ajax({
+                        url: '/Home/Click',
+                        data: { instantaneousX: data1, instantaneousY: data2 },
+                        method: "POST",
+                        //contentType: "application/json;charset=utf-8",
+                        success: function (d) {
+                            $('body').html(d)
+                            console.log(61);
+                        }, error: function () {
+                            alert("hata olustu");
+                        }, complete: function () {
+                        }
+                    });
+                });
+            });
+        </script>
+
+
+        <link rel="stylesheet" href="~/chess_template/templatemo_style.css" />
+        <link rel="stylesheet" href="~/css/chess_page.css" />
+
+
+    </head>
+    <body>
+        <header>
+            <h3>Chess</h3>
+            <button>Login</button>
+        </header>
+
+        <div id="menu">
+
+            <ul>
+                <li><a href="index.html" class="current">Welcome</a></li>
+                <li><a href="blog.html">Design Blog</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="company.html">Our Company</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+
+        </div> <!-- end of templatemo_menu -->
+
+
+
+
+        <div id="board">
+
+
+            @for (int y = 1; y < 9; y++)
             {
-                if (square.Coordinate.X == x && square.Coordinate.Y == y)
+                for (int x = 1; x < 9; x++)
                 {
-                    if (square.Color == ChessBuildPieces.Color.black)
+                    foreach (var square in Model.Squares)
                     {
-                        if (square.Piece == null)
+                        if (square.Coordinate.X == x && square.Coordinate.Y == y)
                         {
-                            <img onclick="window.location.href='@Url.Action("Click","Home",new { instantaneousX=x,instantaneousY=y,Color=square.Color})'" height="75" width="75" style="position:relative; background-color:saddlebrown" />
-                        }
-                        else
-                        {
-                            <img onclick="window.location.href='@Url.Action("Click","Home",new { instantaneousX=x,instantaneousY=y,Color=square.Color})'" src="@square.Piece.ImageURL" height="75" width="75" style="position:relative; background-color:saddlebrown" />
+                            if (square.Color == ChessBuildPieces.Color.black)
+                            {
+                                if (square.Piece == null)
+                                {
+                                    <img height="60" width="60" style="position:relative; background-color:saddlebrown" valuex=@x valuey=@y />
+                                }
+                                else
+                                {
+                                    <img src="@square.Piece.ImageURL" height="60" width="60" style="position:relative; background-color:saddlebrown" valuex=@x valuey=@y />
+
+                                }
+                            }
+                            else
+                            {
+                                if (square.Piece == null)
+                                {
+                                    <img height="60" width="60" style="position:relative; background-color:white" valuex=@x valuey=@y />
+                                }
+                                else
+                                {
+                                    <img src="@square.Piece.ImageURL" height="60" width="60" style="position:relative; background-color:white" valuex=@x valuey=@y />
+
+                                }
+                            }
 
                         }
                     }
-                    else
-                    {
-                        if (square.Piece == null)
-                        {
-                            <img onclick="window.location.href='@Url.Action("Click","Home",new { instantaneousX=x,instantaneousY=y,Color=square.Color})'" height="75" width="75" style="position:relative; background-color:white" />
-                        }
-                        else
-                        {
-                            <img onclick="window.location.href='@Url.Action("Click","Home",new { instantaneousX=x,instantaneousY=y,Color=square.Color})'" src="@square.Piece.ImageURL" height="75" width="75" style="position:relative; background-color:white" />
-
-                        }
-                    }
-
                 }
+                <br />
             }
-        }
-        <br />
-    }
 
-</body>
+        </div>
+
+        <footer>
+            Copyright © 2048 <a href="#">Your Company Name</a> |
+            <a href="http://www.iwebsitetemplate.com" target="_parent">Website Templates</a> by <a href="http://www.templatemo.com" target="_parent">Free CSS Templates</a>
+        </footer>
+
+
+    </body>

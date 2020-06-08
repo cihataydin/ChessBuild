@@ -8,21 +8,25 @@ namespace ChessBuildStones
 {
     public class Bishop : Piece, IPiece
     {
-        public Bishop() : base()
+        public Bishop()
         {
-
+            Name = "Bishop";
+            AvailableSquares = new List<Square>();
+            FreeToMove = true;
+            MoveBack = false;
         }
-        public void CheckSquare()
+        public override void CheckSquare(ref Board board)
         {
-            int coordinateX = Square.Coordinate.X;
-            int coordinateY = Square.Coordinate.Y;
+            Square currentSquare = board.AllSquares.Select(t => t).Where(t => ReferenceEquals(this, t.Piece)).FirstOrDefault();
+            int coordinateX = currentSquare.Coordinate.X;
+            int coordinateY = currentSquare.Coordinate.Y;
             AvailableSquares.Clear();
-            AvailableSquares.Add(Square);
+            AvailableSquares.Add(currentSquare);
 
             int i = 1;
             while (coordinateX + i < (int)Boards.upperLimit && coordinateY + i < (int)Boards.upperLimit)
             {
-                if (!PickSquare(coordinateX + i, coordinateY + i))
+                if (!PickSquare(coordinateX + i, coordinateY + i, ref board))
                     break;
                 i++;
             }
@@ -30,7 +34,7 @@ namespace ChessBuildStones
             int j = 1;
             while (coordinateX - j > (int)Boards.lowerLimit && coordinateY + j < (int)Boards.upperLimit)
             {
-                if (!PickSquare(coordinateX - j, coordinateY + j))
+                if (!PickSquare(coordinateX - j, coordinateY + j, ref board))
                     break;
                 j++;
             }
@@ -38,7 +42,7 @@ namespace ChessBuildStones
             int k = 1;
             while (coordinateX - k > (int)Boards.lowerLimit && coordinateY - k > (int)Boards.lowerLimit)
             {
-                if (!PickSquare(coordinateX - k, coordinateY - k))
+                if (!PickSquare(coordinateX - k, coordinateY - k, ref board))
                     break;
                 k++;
             }
@@ -46,29 +50,38 @@ namespace ChessBuildStones
             int m = 1;
             while (coordinateX + m < (int)Boards.upperLimit && coordinateY - m > (int)Boards.lowerLimit)
             {
-                if (!PickSquare(coordinateX + m, coordinateY - m))
+                if (!PickSquare(coordinateX + m, coordinateY - m, ref board))
                     break;
                 m++;
             }
         }
-        public void InitialPositionSet()
+        public override void InitialPositionSet(ref Board board)
         {
             List<Square> squares;
 
-            squares = Board.AllSquares.Select(t => t).Where(t => (t.Coordinate.X == 3 && t.Coordinate.Y == 1) || (t.Coordinate.X == 6 && t.Coordinate.Y == 1)).ToList();
+            squares = board.AllSquares.Select(t => t).Where(t => (t.Coordinate.X == 3 && t.Coordinate.Y == 1) || (t.Coordinate.X == 6 && t.Coordinate.Y == 1)).ToList();
             foreach (var square in squares)
             {
-                square.Piece = new Bishop() { Color = Color.white, ImageURL = Constant.whiteBishopImageURL, Square = square, Touchable = true };
-                Board.WhitePieces.Add(square.Piece);
+                square.Piece = new Bishop() { Color = Color.white, ImageURL = Constant.whiteBishopImageURL, Touchable = true };
+                board.WhitePieces.Add(square.Piece);
             }
             squares.Clear();
 
-            squares = Board.AllSquares.Select(t => t).Where(t => (t.Coordinate.X == 3 && t.Coordinate.Y == 8) || (t.Coordinate.X == 6 && t.Coordinate.Y == 8)).ToList();
+            squares = board.AllSquares.Select(t => t).Where(t => (t.Coordinate.X == 3 && t.Coordinate.Y == 8) || (t.Coordinate.X == 6 && t.Coordinate.Y == 8)).ToList();
             foreach (var square in squares)
             {
-                square.Piece = new Bishop() { Color = Color.black, ImageURL = Constant.blackBishopImageURL, Square = square, Touchable = true };
-                Board.BlackPieces.Add(square.Piece);
+                square.Piece = new Bishop() { Color = Color.black, ImageURL = Constant.blackBishopImageURL, Touchable = true };
+                board.BlackPieces.Add(square.Piece);
             }
+        }
+        public void Castling(bool boolean, ref Board board)
+        {
+            if (boolean)
+            {
+                Piece piece = board.AllSquares.Select(t => t.Piece).Where(t => ReferenceEquals(t, this)).FirstOrDefault();
+                piece = (Bishop)piece;
+            }
+
         }
     }
 }

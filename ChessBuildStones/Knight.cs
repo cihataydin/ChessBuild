@@ -8,42 +8,51 @@ namespace ChessBuildStones
 {
     public class Knight : Piece, IPiece
     {
-        public void CheckSquare()
+        public Knight()
         {
-            int CoordinateX = Square.Coordinate.X;
-            int CoordinateY = Square.Coordinate.Y;
+            Name = "Knight";
+            AvailableSquares = new List<Square>();
+            FreeToMove = true;
+            MoveBack = false;
+        }
+        public override void CheckSquare(ref Board board)
+        {
+            Square currentSquare = board.AllSquares.Select(t => t).Where(t => ReferenceEquals(this, t.Piece)).FirstOrDefault();
+
+            int CoordinateX = currentSquare.Coordinate.X;
+            int CoordinateY = currentSquare.Coordinate.Y;
             AvailableSquares.Clear();
-            AvailableSquares.Add(Square);
+            AvailableSquares.Add(currentSquare);
 
             int two = 2;
             int one = 1;
-            PickSquare(CoordinateX + two, CoordinateY - one);
-            PickSquare(CoordinateX + two, CoordinateY + one);
-            PickSquare(CoordinateX - two, CoordinateY + one);
-            PickSquare(CoordinateX - two, CoordinateY - one);
-            PickSquare(CoordinateX + one, CoordinateY + two);
-            PickSquare(CoordinateX - one, CoordinateY + two);
-            PickSquare(CoordinateX - one, CoordinateY - two);
-            PickSquare(CoordinateX + one, CoordinateY - two);
+            PickSquare(CoordinateX + two, CoordinateY - one, ref board);
+            PickSquare(CoordinateX + two, CoordinateY + one, ref board);
+            PickSquare(CoordinateX - two, CoordinateY + one, ref board);
+            PickSquare(CoordinateX - two, CoordinateY - one, ref board);
+            PickSquare(CoordinateX + one, CoordinateY + two, ref board);
+            PickSquare(CoordinateX - one, CoordinateY + two, ref board);
+            PickSquare(CoordinateX - one, CoordinateY - two, ref board);
+            PickSquare(CoordinateX + one, CoordinateY - two, ref board);
         }
 
-        public void InitialPositionSet()
+        public override void InitialPositionSet(ref Board board)
         {
             List<Square> squares;
 
-            squares = Board.AllSquares.Select(t => t).Where(t => (t.Coordinate.X == 2 && t.Coordinate.Y == 1) || (t.Coordinate.X == 7 && t.Coordinate.Y == 1)).ToList();
+            squares = board.AllSquares.Select(t => t).Where(t => (t.Coordinate.X == 2 && t.Coordinate.Y == 1) || (t.Coordinate.X == 7 && t.Coordinate.Y == 1)).ToList();
             foreach (var square in squares)
             {
-                square.Piece = new Knight() { Color = Color.white, ImageURL = Constant.whiteKnightImageURL, Square = square, Touchable = true };
-                Board.WhitePieces.Add(square.Piece);
+                square.Piece = new Knight() { Color = Color.white, ImageURL = Constant.whiteKnightImageURL, Touchable = true };
+                board.WhitePieces.Add(square.Piece);
             }
             squares.Clear();
 
-            squares = Board.AllSquares.Select(t => t).Where(t => (t.Coordinate.X == 2 && t.Coordinate.Y == 8) || (t.Coordinate.X == 7 && t.Coordinate.Y == 8)).ToList();
+            squares = board.AllSquares.Select(t => t).Where(t => (t.Coordinate.X == 2 && t.Coordinate.Y == 8) || (t.Coordinate.X == 7 && t.Coordinate.Y == 8)).ToList();
             foreach (var square in squares)
             {
-                square.Piece = new Knight() { Color = Color.black, ImageURL = Constant.blackKnightImageURL, Square = square, Touchable = true };
-                Board.BlackPieces.Add(square.Piece);
+                square.Piece = new Knight() { Color = Color.black, ImageURL = Constant.blackKnightImageURL, Touchable = true };
+                board.BlackPieces.Add(square.Piece);
             }
         }
     }
