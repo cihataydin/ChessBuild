@@ -1,8 +1,4 @@
-﻿body {
-    
-}
-
-header{
+﻿header{
     height: 10%;
     background-color:green
 }
@@ -46,7 +42,6 @@ footer{
     color: #CCC;
     font-weight: bold;
     outline: none;
-    background: url(images/templatemo_menu_divider.png) left bottom no-repeat;
 }
 
 #menu li a:hover {

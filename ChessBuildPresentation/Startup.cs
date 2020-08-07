@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using WebSocketManager;
 
 namespace ChessBuildPresentation
 {
@@ -25,12 +27,13 @@ namespace ChessBuildPresentation
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddWebSocketManager();
             services.AddDistributedMemoryCache();
             services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -43,6 +46,8 @@ namespace ChessBuildPresentation
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+            app.UseWebSockets();
+            app.MapWebSocketManager("/ws", serviceProvider.GetService<ChatMessageHandler>());
             app.UseStaticFiles();
 
             app.UseSession();
@@ -50,6 +55,7 @@ namespace ChessBuildPresentation
             app.UseRouting();
 
             app.UseAuthorization();
+           
 
             app.UseEndpoints(endpoints =>
             {
@@ -58,11 +64,8 @@ namespace ChessBuildPresentation
                     pattern: "{controller=Home}/{action=Click}/{id?}");
             });
 
-            //JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-            //{
-            //    Formatting = Formatting.Indented,
-            //    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            //};
+
+            
         }
     }
 }

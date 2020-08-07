@@ -3,7 +3,9 @@
     Layout = null;
 }
     <head>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>*@
+
+
         <script>
             //var x = new XMLHttpRequest();
             //var m = new Date(0);
@@ -12,102 +14,88 @@
 
             //Before ajax used
             //onclick="window.location.href='@@Url.Action("Click","Home",new { instantaneousX=x,instantaneousY=y})'"
-            $(function () {
-                $("img").click(function () {
-                    var data1 = $(this).attr("valuex");
-                    var data2 = $(this).attr("valuey");
-                    $.ajax({
-                        url: '/Home/Click',
-                        data: { instantaneousX: data1, instantaneousY: data2 },
-                        method: "POST",
-                        //contentType: "application/json;charset=utf-8",
-                        success: function (d) {
-                            $('body').html(d)
-                            console.log(61);
-                        }, error: function () {
-                            alert("hata olustu");
-                        }, complete: function () {
-                        }
-                    });
-                });
-            });
+
         </script>
 
 
         <link rel="stylesheet" href="~/chess_template/templatemo_style.css" />
         <link rel="stylesheet" href="~/css/chess_page.css" />
 
+        <script src="~/js/jquery.js"></script>
+        <script src="~/js/site.js"></script>
+
 
     </head>
-    <body>
-        <header>
-            <h3>Chess</h3>
-            <button>Login</button>
-        </header>
+<body>
+    <header>
+        <h3>Chess</h3>
+        <button>Login</button>
+        <button onclick="connect()">Connect Me</button>
+    </header>
 
-        <div id="menu">
+    <div id="menu">
 
-            <ul>
-                <li><a href="index.html" class="current">Welcome</a></li>
-                <li><a href="blog.html">Design Blog</a></li>
-                <li><a href="portfolio.html">Portfolio</a></li>
-                <li><a href="company.html">Our Company</a></li>
-                <li><a href="contact.html">Contact Us</a></li>
-            </ul>
+        <ul>
+            <li><a href="index.html" class="current">Welcome</a></li>
+            <li><a href="blog.html">Design Blog</a></li>
+            <li><a href="portfolio.html">Portfolio</a></li>
+            <li><a href="company.html">Our Company</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
 
-        </div> <!-- end of templatemo_menu -->
-
-
-
-
-        <div id="board">
+    </div> <!-- end of templatemo_menu -->
 
 
-            @for (int y = 1; y < 9; y++)
+
+
+    <div id="board">
+
+
+        @for (int y = 1; y < 9; y++)
+        {
+            for (int x = 1; x < 9; x++)
             {
-                for (int x = 1; x < 9; x++)
+                foreach (var square in Model.Squares)
                 {
-                    foreach (var square in Model.Squares)
+                    if (square.Coordinate.X == x && square.Coordinate.Y == y)
                     {
-                        if (square.Coordinate.X == x && square.Coordinate.Y == y)
+                        if (square.Color == ChessBuildPieces.Color.black)
                         {
-                            if (square.Color == ChessBuildPieces.Color.black)
+                            if (square.Piece == null)
                             {
-                                if (square.Piece == null)
-                                {
-                                    <img height="60" width="60" style="position:relative; background-color:saddlebrown" valuex=@x valuey=@y />
-                                }
-                                else
-                                {
-                                    <img src="@square.Piece.ImageURL" height="60" width="60" style="position:relative; background-color:saddlebrown" valuex=@x valuey=@y />
-
-                                }
+                                <img height="60" width="60" style="position:relative; background-color:saddlebrown" valuex=@x valuey=@y />
                             }
                             else
                             {
-                                if (square.Piece == null)
-                                {
-                                    <img height="60" width="60" style="position:relative; background-color:white" valuex=@x valuey=@y />
-                                }
-                                else
-                                {
-                                    <img src="@square.Piece.ImageURL" height="60" width="60" style="position:relative; background-color:white" valuex=@x valuey=@y />
+                                <img src="@square.Piece.ImageURL" height="60" width="60" style="position:relative; background-color:saddlebrown" valuex=@x valuey=@y />
 
-                                }
                             }
-
                         }
+                        else
+                        {
+                            if (square.Piece == null)
+                            {
+                                <img height="60" width="60" style="position:relative; background-color:white" valuex=@x valuey=@y />
+                            }
+                            else
+                            {
+                                <img src="@square.Piece.ImageURL" height="60" width="60" style="position:relative; background-color:white" valuex=@x valuey=@y />
+
+                            }
+                        }
+
                     }
                 }
-                <br />
             }
+            <br />
+        }
 
-        </div>
+    </div>
 
-        <footer>
-            Copyright © 2048 <a href="#">Your Company Name</a> |
-            <a href="http://www.iwebsitetemplate.com" target="_parent">Website Templates</a> by <a href="http://www.templatemo.com" target="_parent">Free CSS Templates</a>
-        </footer>
+    <footer>
+        Copyright © 2048 <a href="#">Your Company Name</a> |
+        <a href="http://www.iwebsitetemplate.com" target="_parent">Website Templates</a> by <a href="http://www.templatemo.com" target="_parent">Free CSS Templates</a>
+    </footer>
 
-
-    </body>
+    
+</body>
