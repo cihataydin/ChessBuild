@@ -39,12 +39,6 @@ namespace ChessBuildPresentation
             var socketId = GetId(socket);
             string value2 = matches.FirstOrDefault(t => t.Value == socketId).Value;
 
-            //if (_sockets.Count == 0)
-            //{
-            //    waiters.Add(socketId);
-            //    return false;
-            //}
-
             List<int> vs = new List<int>();
             Random random = new Random();
             bool state = true;
@@ -60,7 +54,6 @@ namespace ChessBuildPresentation
                     return state;
                 }
             }
-
             while (state)
             {
                 int rd = random.Next(_sockets.Keys.Count);

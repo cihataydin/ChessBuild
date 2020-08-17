@@ -18,9 +18,34 @@ namespace ChessBuildPresentation
         {
             await base.OnConnected(socket);
             var socketId = WebSocketConnectionManager.GetId(socket);
-            WebSocketConnectionManager.MatchSocket(socket);
-            //await SendMessageToAllAsync($"{socketId} is now connected");
-            await SendMessageAsync(socketId, socketId);
+
+            if (WebSocketConnectionManager.MatchSocket(socket))
+            {
+                string matchKey = null;
+                if (WebSocketConnectionManager.matches.Values.Contains(socketId))
+                {
+                    matchKey = WebSocketConnectionManager.matches.FirstOrDefault(t => t.Value == socketId).Key;
+                }
+                WebSocketConnectionManager.matches.TryGetValue(socketId, out string matchValue);
+
+                await SendMessageAsync(socketId, " Match is completed....");
+                await SendMessageAsync(socketId, "Black");
+                if(matchValue != null)
+                {
+                    await SendMessageAsync(matchValue, " Match is completed....");
+                    await SendMessageAsync(matchValue, "White");
+                }
+                else if(matchKey != null)
+                {
+                    await SendMessageAsync(matchKey, " Match is completed....");
+                    await SendMessageAsync(matchKey, "White");
+                }              
+            }
+            else
+            {
+                await SendMessageAsync(socketId, "Waiting for opponent...");
+            }
+            //await SendMessageToAllAsync($"{socketId} is now connected");  
         }
 
         public override async Task ReceiveAsync(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
@@ -33,14 +58,14 @@ namespace ChessBuildPresentation
             {
                 matchKey = WebSocketConnectionManager.matches.FirstOrDefault(t => t.Value == socketId).Key;
             }
-            WebSocketConnectionManager.matches.TryGetValue(socketId, out string matchvalue);
-            if (matchvalue != null)
+            WebSocketConnectionManager.matches.TryGetValue(socketId, out string matchValue);
+            if (matchValue != null)
             {
-                await SendMessageAsync(matchvalue, message +" "+matchvalue);
+                await SendMessageAsync(matchValue, message);
             }
             if(matchKey != null)
             {
-                await SendMessageAsync(matchKey, message +" "+ matchKey);
+                await SendMessageAsync(matchKey, message);
             }
         }
     }

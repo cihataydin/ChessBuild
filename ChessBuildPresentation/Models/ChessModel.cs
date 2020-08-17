@@ -13,5 +13,7 @@ namespace ChessBuildPresentation.Models
             Squares = new List<Square>();
         }
         public List<Square> Squares;
+        public string Counter { get; set; }
+        public int Color { get; set; }
     }
 }

@@ -53,14 +53,41 @@ namespace ChessBuildPresentation.Controllers
 
             model.Squares = board.AllSquares;
             board.CastAll();
-            HttpContext.Session.SetObject("board", board);
+
+            int? counter = HttpContext.Session.GetInt32("counter1");
+
+            if (counter == null)
+            {
+                HttpContext.Session.SetInt32("counter1", 1);
+                HttpContext.Session.SetObject("board1", board);
+                model.Counter = "board1";
+            }
+            else
+            {
+                counter++;
+                int iCounter = Convert.ToInt32(counter);
+                HttpContext.Session.SetInt32("counter1", iCounter);
+                string sCount = Convert.ToString(iCounter);
+
+                string count = Convert.ToString(iCounter);
+                HttpContext.Session.SetObject("board" + count, board);
+                model.Counter = "board" + count;
+            }
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Click(int initialX, int initialY, int instantaneousX, int instantaneousY)
+        public IActionResult Click(int initialX, int initialY, int instantaneousX, int instantaneousY, string count, int color, string onMessage)
         {
-            board = HttpContext.Session.GetObject<Board>("board");
+            if(onMessage == "Update")
+            {
+                board = HttpContext.Session.GetObject<Board>(count);
+                model.Squares = board.AllSquares;
+                model.Counter = count;
+                model.Color = color;
+                return View(model);
+            }
+            board = HttpContext.Session.GetObject<Board>(count);
             board.TakeBackCastAll();
             Square secondClickSquare = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == instantaneousX && t.Coordinate.Y == instantaneousY).FirstOrDefault();
             if (secondClickSquare != null)
@@ -69,8 +96,10 @@ namespace ChessBuildPresentation.Controllers
                 {
                     Square firstClickSquare = board.AllSquares.Select(t => t).Where(t => t.Coordinate.X == initialX && t.Coordinate.Y == initialY).FirstOrDefault();
 
-                    if (firstClickSquare.Piece != null)
+                    if (firstClickSquare.Piece != null && (int)firstClickSquare.Piece.Color == color)
                     {
+                        
+
                         if (firstClickSquare.Piece.Touchable == false)
                         {
                             King king = (King)firstClickSquare.Piece;
@@ -79,10 +108,12 @@ namespace ChessBuildPresentation.Controllers
                             {
                                 if (!king.ShortCastle(board))
                                 {
-                                    HttpContext.Session.Clear();
+                                    if (onMessage == "Yes") { color = 1 - color; }
                                     board.CastAll();
-                                    HttpContext.Session.SetObject("board", board);
+                                    HttpContext.Session.SetObject(count, board);
                                     model.Squares = board.AllSquares;
+                                    model.Counter = count;
+                                    model.Color = color;
                                     return View(model);
                                 }
                             }
@@ -90,16 +121,19 @@ namespace ChessBuildPresentation.Controllers
                             {
                                 if (!king.LongCastle(board))
                                 {
-                                    HttpContext.Session.Clear();
+                                    if (onMessage == "Yes") { color = 1 - color; }
                                     board.CastAll();
-                                    HttpContext.Session.SetObject("board", board);
+                                    HttpContext.Session.SetObject(count, board);
                                     model.Squares = board.AllSquares;
+                                    model.Counter = count;
+                                    model.Color = color;
                                     return View(model);
                                 }
                             }
                         }
                         if (firstClickSquare.Piece != null)
                         {
+                           
                             if (firstClickSquare.Piece.MoveTo(secondClickSquare, board))
                             {
                                 if (!secondClickSquare.Piece.DiscoverCheckToMove(board))
@@ -113,15 +147,22 @@ namespace ChessBuildPresentation.Controllers
                                 }
                             }
                         }
-                        HttpContext.Session.Clear();
+                        if (onMessage == "Yes") { color = 1 - color; }
                         board.CastAll();
-                        HttpContext.Session.SetObject("board", board);
+                        HttpContext.Session.SetObject(count, board);
                         model.Squares = board.AllSquares;
+                        model.Counter = count;
+                        model.Color = color;
                         return View(model);
                     }
                 }
             }
+            if (onMessage == "Yes") { color = 1 - color; }
+            board.CastAll();
+            HttpContext.Session.SetObject(count, board);
             model.Squares = board.AllSquares;
+            model.Counter = count;
+            model.Color = color;
             return View(model);
         }
 
