@@ -82,9 +82,8 @@ img.square {
     margin: 0;
     padding: 0;
     border: 0;
-    position: relative;
-    width: 75px;
-    height: 75px;
+    width: 10%;
+    height: 10%;
 }
 
 button.connection {
@@ -99,6 +98,7 @@ button:hover{
     background:white;
 }
 
-.board{
-    border:20px;
+.board {
+    position: relative;
+    min-width: 100%;
 }
