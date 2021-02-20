@@ -61,7 +61,7 @@ namespace ChessBuildPresentation
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Click}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
 

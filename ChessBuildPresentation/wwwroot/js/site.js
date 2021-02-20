@@ -56,7 +56,7 @@ function updateBoard() {
     let userColor = getColor();
     $.ajax({
         async: false,
-        url: '/Home/Click',
+        url: '/Home/Index',
         data: { initialX: 0, initialY: 0, instantaneousX: 0, instantaneousY: 0, count: boardCounter, color: userColor, onMessage: "Update" },
         method: "POST",
         //contentType: "application/json;charset=utf-8",
@@ -101,7 +101,7 @@ function movePiece(param) {
     console.log(boardCounter + " onmessage");
     $.ajax({
         async: false,
-        url: '/Home/Click',
+        url: '/Home/Index',
         data: { initialX: firstDataX, initialY: firstDataY, instantaneousX: secondDataX, instantaneousY: secondDataY, count: boardCounter, color: userColor, onMessage: "Yes" },
         method: "POST",
         //contentType: "application/json;charset=utf-8",
@@ -145,7 +145,7 @@ function useStoredData() {
 
         $.ajax({
             async: false,
-            url: '/Home/Click',
+            url: '/Home/Index',
             data: { initialX: firstDataX, initialY: firstDataY, instantaneousX: secondDataX, instantaneousY: secondDataY, count: boardCounter, color: userColor, onMessage : "No" },
             method: "POST",
             //contentType: "application/json;charset=utf-8",

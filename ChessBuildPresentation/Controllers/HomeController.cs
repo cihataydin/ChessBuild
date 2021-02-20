@@ -30,7 +30,7 @@ namespace ChessBuildPresentation.Controllers
         {
             _logger = logger;
         }
-        public IActionResult Click()
+        public IActionResult Index()
         {
             board.CreateBoard();
             piecePawn = new Pawn();
@@ -77,7 +77,7 @@ namespace ChessBuildPresentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult Click(int initialX, int initialY, int instantaneousX, int instantaneousY, string count, int color, string onMessage)
+        public IActionResult Index(int initialX, int initialY, int instantaneousX, int instantaneousY, string count, int color, string onMessage)
         {
             if(onMessage == "Update")
             {

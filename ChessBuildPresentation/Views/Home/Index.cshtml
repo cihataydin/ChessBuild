@@ -1,0 +1,113 @@
+﻿@model ChessBuildPresentation.Models.ChessModel
+<head>
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>*@
+    <script>
+                                        //var x = new XMLHttpRequest();
+                                        //var m = new Date(0);
+                                        //x.open("POST","http://localhost:44358")
+                                        //x.setRequestHeader("If-Modified-Since", m);
+
+                                        //Before ajax used
+                                        //onclick="window.location.href='@@Url.Action("Click","Home",new { instantaneousX=x,instantaneousY=y})'"
+    </script>
+</head>
+<body>
+    <button class="connection" onclick="connect()">Connect Me</button>
+    <p>To play press the button and wait for opponent.</p>
+    <div id="board" value=@Model.Counter userColor="@Model.Color">
+        @if (Model.Color == 0)
+        {
+            @for (int y = 1; y < 9; y++)
+            {
+                for (int x = 1; x < 9; x++)
+                {
+                    foreach (var square in Model.Squares)
+                    {
+                        if (square.Coordinate.X == x && square.Coordinate.Y == y)
+                        {
+                            if (square.Color == ChessBuildPieces.Color.black)
+                            {
+                                if (square.Piece == null)
+                                {
+                     
+                                        <img class="square" stoneColor="@Model.Color" height="65" width="65" style="position:relative; background-color:saddlebrown" valuex=@x valuey=@y />
+            
+                                }
+                                else
+                                {
+     
+                                        <img class="square" src="@square.Piece.ImageURL" stoneColor="0" height="65" width="65" style="position:relative; background-color:saddlebrown" valuex=@x valuey=@y />
+             
+                                }
+                            }
+                            else
+                            {
+                                if (square.Piece == null)
+                                {
+        
+                                        <img class="square" stoneColor="@Model.Color" height="65" width="65" style="position:relative; background-color:white" valuex=@x valuey=@y />
+           
+                                }
+                                else
+                                {
+    
+                                        <img class="square" src="@square.Piece.ImageURL" stoneColor="1" height="65" width="65" style="position:relative; background-color:white" valuex=@x valuey=@y />
+
+                                }
+                            }
+
+                        }
+                    }
+                }
+                <br />
+            }
+        }
+        else
+        {
+            @for (int y = 8; y > 0; y--)
+            {
+                for (int x = 8; x > 0; x--)
+                {
+                    foreach (var square in Model.Squares)
+                    {
+                        if (square.Coordinate.X == x && square.Coordinate.Y == y)
+                        {
+                            if (square.Color == ChessBuildPieces.Color.black)
+                            {
+                                if (square.Piece == null)
+                                {
+                
+                                        <img class="square" stoneColor="@Model.Color" height="65" width="65" style="position:relative; background-color:saddlebrown" valuex=@x valuey=@y />
+   
+                                }
+                                else
+                                {
+      
+                                        <img class="square" src="@square.Piece.ImageURL" stoneColor="0" height="65" width="65" style="position:relative; background-color:saddlebrown" valuex=@x valuey=@y />
+   
+                                }
+                            }
+                            else
+                            {
+                                if (square.Piece == null)
+                                {
+               
+                                        <img class="square" stoneColor="@Model.Color" height="65" width="65" style="position:relative; background-color:white" valuex=@x valuey=@y />
+        
+                                }
+                                else
+                                {
+       
+                                        <img class="square" src="@square.Piece.ImageURL" stoneColor="1" height="65" width="65" style="position:relative; background-color:white" valuex=@x valuey=@y />
+        
+                                }
+                            }
+
+                        }
+                    }
+                }
+                <br />
+            }
+        }
+    </div>
+</body>
