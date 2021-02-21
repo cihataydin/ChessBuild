@@ -94,7 +94,7 @@ button:hover{
     background:white;
 }
 
-#board {
+.container {
     position: relative;
     min-width: 54rem;
 }
