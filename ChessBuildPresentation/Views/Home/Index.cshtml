@@ -2,13 +2,13 @@
 <head>
     @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>*@
     <script>
-                                        //var x = new XMLHttpRequest();
-                                        //var m = new Date(0);
-                                        //x.open("POST","http://localhost:44358")
-                                        //x.setRequestHeader("If-Modified-Since", m);
+        //var x = new XMLHttpRequest();
+        //var m = new Date(0);
+        //x.open("POST","http://localhost:44358")
+        //x.setRequestHeader("If-Modified-Since", m);
 
-                                        //Before ajax used
-                                        //onclick="window.location.href='@@Url.Action("Click","Home",new { instantaneousX=x,instantaneousY=y})'"
+        //Before ajax used
+        //onclick="window.location.href='@@Url.Action("Click","Home",new { instantaneousX=x,instantaneousY=y})'"
     </script>
 </head>
 <body>
@@ -29,30 +29,22 @@
                             {
                                 if (square.Piece == null)
                                 {
-                     
-                                        <img class="square" stoneColor="@Model.Color" height="65" width="65" style="position:relative; background-color:saddlebrown" valuex=@x valuey=@y />
-            
+                                    <img class="square" stoneColor="@Model.Color" style="position:relative; background-color:saddlebrown" valuex=@x valuey=@y />
                                 }
                                 else
                                 {
-     
-                                        <img class="square" src="@square.Piece.ImageURL" stoneColor="0" height="65" width="65" style="position:relative; background-color:saddlebrown" valuex=@x valuey=@y />
-             
+                                    <img class="square" src="@square.Piece.ImageURL" stoneColor="0" style="position:relative; background-color:saddlebrown" valuex=@x valuey=@y />
                                 }
                             }
                             else
                             {
                                 if (square.Piece == null)
                                 {
-        
-                                        <img class="square" stoneColor="@Model.Color" height="65" width="65" style="position:relative; background-color:white" valuex=@x valuey=@y />
-           
+                                    <img class="square" stoneColor="@Model.Color" style="position:relative; background-color:white" valuex=@x valuey=@y />
                                 }
                                 else
                                 {
-    
-                                        <img class="square" src="@square.Piece.ImageURL" stoneColor="1" height="65" width="65" style="position:relative; background-color:white" valuex=@x valuey=@y />
-
+                                    <img class="square" src="@square.Piece.ImageURL" stoneColor="1" style="position:relative; background-color:white" valuex=@x valuey=@y />
                                 }
                             }
 
@@ -76,30 +68,28 @@
                             {
                                 if (square.Piece == null)
                                 {
-                
-                                        <img class="square" stoneColor="@Model.Color" height="65" width="65" style="position:relative; background-color:saddlebrown" valuex=@x valuey=@y />
-   
+
+                                    <img class="square" stoneColor="@Model.Color" style="position:relative; background-color:saddlebrown" valuex=@x valuey=@y />
+
                                 }
                                 else
                                 {
-      
-                                        <img class="square" src="@square.Piece.ImageURL" stoneColor="0" height="65" width="65" style="position:relative; background-color:saddlebrown" valuex=@x valuey=@y />
-   
+
+                                    <img class="square" src="@square.Piece.ImageURL" stoneColor="0" style="position:relative; background-color:saddlebrown" valuex=@x valuey=@y />
+
                                 }
                             }
                             else
                             {
                                 if (square.Piece == null)
                                 {
-               
-                                        <img class="square" stoneColor="@Model.Color" height="65" width="65" style="position:relative; background-color:white" valuex=@x valuey=@y />
-        
+
+                                    <img class="square" stoneColor="@Model.Color" style="position:relative; background-color:white" valuex=@x valuey=@y />
+
                                 }
                                 else
                                 {
-       
-                                        <img class="square" src="@square.Piece.ImageURL" stoneColor="1" height="65" width="65" style="position:relative; background-color:white" valuex=@x valuey=@y />
-        
+                                    <img class="square" src="@square.Piece.ImageURL" stoneColor="1" style="position:relative; background-color:white" valuex=@x valuey=@y />
                                 }
                             }
 
